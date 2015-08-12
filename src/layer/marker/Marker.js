@@ -1,24 +1,119 @@
 /*
- * L.Marker is used to display clickable/draggable icons on the map.
+ * 🍂class Marker
+ * 🍂aka L.Marker
+ * L.Marker is used to display clickable/draggable icons on the map. Extends `Layer`.
+ *
+ * 🍂example
+ *
+ * `L.marker([50.5, 30.5]).addTo(map);`
  */
 
 L.Marker = L.Layer.extend({
 
+		/* 🍂section
+		 * 🍂aka Marker options	*/
 	options: {
-		pane: 'markerPane',
-		nonBubblingEvents: ['click', 'dblclick', 'mouseover', 'mouseout', 'contextmenu'],
-
+		/* 🍂option icon, L.Icon, *
+		 * Icon class to use for rendering the marker. See [Icon documentation](#L.Icon) for details on how to customize the marker icon. Set to new `L.Icon.Default()` by default.	*/
 		icon: new L.Icon.Default(),
-		// title: '',
-		// alt: '',
+
+		/* 🍂option interactive, Boolean, true
+		 * If `false`, the marker will not emit mouse events and will act as a part of the underlying map.	*/
 		interactive: true,
+
+		/* 🍂option draggable, Boolean, false
+		 * Whether the marker is draggable with mouse/touch or not.	*/
 		// draggable: false,
+
+		/* 🍂option keyboard, Boolean, true
+		 * Whether the marker can be tabbed to with a keyboard and clicked by pressing enter.	*/
 		keyboard: true,
+
+		/* 🍂option title, String, ''
+		 * Text for the browser tooltip that appear on marker hover (no tooltip by default).	*/
+		// title: '',
+
+		/* 🍂option alt, String, ''
+		 * Text for the `alt` attribute of the icon image (useful for accessibility).	*/
+		// alt: '',
+
+		/* 🍂option zIndexOffset, Number, 0
+		 * By default, marker images zIndex is set automatically based on its latitude. Use this option if you want to put the marker on top of all others (or below), specifying a high value like `1000` (or high negative value, respectively).	*/
 		zIndexOffset: 0,
+
+		/* 🍂option opacity, Number, 1.0
+		 * The opacity of the marker.	*/
 		opacity: 1,
+
+		/* 🍂option riseOnHover, Boolean, false
+		 * If `true`, the marker will get on top of others when you hover the mouse over it.	*/
 		// riseOnHover: false,
-		riseOffset: 250
+
+		/* 🍂option riseOffset, Number, 250
+		 * The z-index offset used for the `riseOnHover` feature.	*/
+		riseOffset: 250,
+
+		/* 🍂option icon, L.Icon, *
+		 * `Map pane` where the markers icon will be added.	*/
+		pane: 'markerPane',
+
+		/// FIXME: shadowPane is no longer a valid option
+		nonBubblingEvents: ['click', 'dblclick', 'mouseover', 'mouseout', 'contextmenu']
 	},
+
+
+	/// FIXME: Most of the events are inherited from Layer or Draggable.
+
+	/* 🍂section
+	 *
+	 * You can subscribe to the following events using [these methods](#events).
+	 *
+	 * 🍂event click, MouseEvent
+	 * Fired when the user clicks (or taps) the marker.
+	 *
+	 * 🍂event dblclick, MouseEvent
+	 * Fired when the user double-clicks (or double-taps) the marker.
+	 *
+	 * 🍂event mousedown, MouseEvent
+	 * Fired when the user pushes the mouse button on the marker.
+	 *
+	 * 🍂event mouseover, MouseEvent
+	 * Fired when the mouse enters the marker.
+	 *
+	 * 🍂event mouseout, MouseEvent
+	 * Fired when the mouse leaves the marker.
+	 *
+	 * 🍂event contextmenu, MouseEvent
+	 * Fired when the user right-clicks on the marker.
+	 *
+	 * 🍂event dragstart, Event
+	 * Fired when the user starts dragging the marker.
+	 *
+	 * 🍂event drag, Event
+	 * Fired repeatedly while the user drags the marker.
+	 *
+	 * 🍂event dragend, DragEndEvent
+	 * Fired when the user stops dragging the marker.
+	 *
+	 * 🍂event add, Event
+	 * Fired when the marker is added to the map.
+	 *
+	 * 🍂event remove, Event
+	 * Fired when the marker is removed from the map.
+	 *
+	 * 🍂event popupopen, PopupEvent
+	 * Fired when a popup bound to the marker is open.
+	 *
+	 * 🍂event popupclose, PopupEvent
+	 * Fired when a popup bound to the marker is closed.
+	 */
+
+
+
+	/* 🍂section
+	 *
+	 * In addition to [shared layer methods](#Layer) like `addTo()` and `remove()` and [popup methods](#Popup) like bindPopup() you can also use the following methods:
+	 */
 
 	initialize: function (latlng, options) {
 		L.setOptions(this, options);
@@ -55,22 +150,38 @@ L.Marker = L.Layer.extend({
 		return events;
 	},
 
+	/* 🍂method getLatLng, LatLng
+	 * Returns the current geographical position of the marker.	*/
 	getLatLng: function () {
 		return this._latlng;
 	},
 
+	/* 🍂method setLatLng, this
+	 * 🍂param latlng, LatLng
+	 * Changes the marker position to the given point.	*/
 	setLatLng: function (latlng) {
 		var oldLatLng = this._latlng;
 		this._latlng = L.latLng(latlng);
 		this.update();
+
+		/// NOTE: We can describe an event inside a function with 🍂event, and everything will be sorted properly.
+
+		/* 🍂event move, Event
+		 * Fired when the marker is moved via `setLatLng`. Old and new coordinates are included in event arguments as `oldLatLng`, `latlng`. */
 		return this.fire('move', {oldLatLng: oldLatLng, latlng: this._latlng});
 	},
 
+	/* 🍂method setZIndexOffset, this
+	 * 🍂param offset, Number
+	 * Changes the [zIndex offset](#Marker.zIndexOffset) of the marker.	*/
 	setZIndexOffset: function (offset) {
 		this.options.zIndexOffset = offset;
 		return this.update();
 	},
 
+	/* 🍂method setIcon, this
+	 * 🍂param icon, Icon
+	 * Changes the marker icon.	*/
 	setIcon: function (icon) {
 
 		this.options.icon = icon;
@@ -232,6 +343,9 @@ L.Marker = L.Layer.extend({
 		}
 	},
 
+	/* 🍂method setOpacity, this
+	 * 🍂param opacity, Number
+	 * Changes the opacity of the marker.	*/
 	setOpacity: function (opacity) {
 		this.options.opacity = opacity;
 		if (this._map) {
@@ -260,6 +374,16 @@ L.Marker = L.Layer.extend({
 	}
 });
 
+/// FIXME: update() and toGeoJSON() are now Layer functions and no longer present.
+
+
+
+/*
+ * 🍂factory L.marker
+ * 🍂param latlng, LatLnt
+ * 🍂param options?, Marker options
+ * Instantiates a Marker object given a geographical point and optionally an options object.
+ */
 L.marker = function (latlng, options) {
 	return new L.Marker(latlng, options);
 };

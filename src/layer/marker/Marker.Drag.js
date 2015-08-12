@@ -2,6 +2,18 @@
  * L.Handler.MarkerDrag is used internally by L.Marker to make the markers draggable.
  */
 
+
+/* 🍂namespace Marker
+ * 🍂section Interaction handlers
+ * 
+ * Interaction handlers are properties of a marker instance that allow you to control interaction behavior in runtime, enabling or disabling certain features such as dragging (see `IHandler` methods). Example:
+ * 
+ * `marker.dragging.disable();`
+ * 
+ * 🍂property dragging, IHandler
+ * Marker dragging handler (by both mouse and touch).
+ */
+
 L.Handler.MarkerDrag = L.Handler.extend({
 	initialize: function (marker) {
 		this._marker = marker;
