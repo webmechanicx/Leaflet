@@ -1,20 +1,60 @@
 
+/*
+ * 🍂class Layer
+ * 🍂aka L.Layer
+ * 🍂aka ILayer
+ *
+ * A set of methods from the Layer base class that all Leaflet layers use.
+ * Inherits all methods, options and events from `L.Evented`.
+ *
+ * 🍂example
+ *
+ * ```js
+ * var layer = L.Marker(latlng).addTo(map);
+ * layer.addTo(map*);
+ * layer.remove();
+ * ```
+ *
+ * 🍂event add, Event
+ * Fired after the layer is added to a map
+ *
+ * 🍂event remove, Event
+ * Fired after the layer is removed from a map
+ */
+
+
 L.Layer = L.Evented.extend({
 
+	/* 🍂section Inherited Options
+	 * Classes extending `L.Layer` will inherit the following options:	*/
 	options: {
+		/* 🍂option pane, String, 'overlayPane'
+		 * By default the layer will be added to the map's [overlay pane](#map-overlaypane). Overriding this option will cause the layer to be placed on another pane by default. */
 		pane: 'overlayPane',
 		nonBubblingEvents: []  // Array of events that should not be bubbled to DOM parents (like the map)
 	},
 
+	/* 🍂section Inherited methods
+	 * Classes extending `L.Layer` will inherit the following methods:
+	 *
+	 * 🍂method addTo, this
+	 * 🍂param map, Map
+	 * Adds the layer to the given map
+	 */
 	addTo: function (map) {
 		map.addLayer(this);
 		return this;
 	},
 
+	/* 🍂method remove, this
+	 * Removes the layer from the map it is currently active on. */
 	remove: function () {
 		return this.removeFrom(this._map || this._mapToAdd);
 	},
 
+	/* 🍂method removeFrom
+	 * 🍂param map, Map
+	 * Removes the layer from the given map */
 	removeFrom: function (obj) {
 		if (obj) {
 			obj.removeLayer(this);
@@ -22,6 +62,9 @@ L.Layer = L.Evented.extend({
 		return this;
 	},
 
+	/* 🍂method getPane, HTMLElement
+	 * 🍂param name?, String
+	 * Returns the `HTMLElement` representing the named pane on the map. If name is omitted, returns the pane for this layer. */
 	getPane: function (name) {
 		return this._map.getPane(name ? (this.options[name] || name) : this.options.pane);
 	},
@@ -65,7 +108,21 @@ L.Layer = L.Evented.extend({
 });
 
 
+/* 🍂namespace Map
+ * 🍂section Layer events
+ *
+ * 🍂event layeradd, LayerEvent
+ * Fired when a new layer is added to the map.
+ *
+ * 🍂event layerremove, LayerEvent
+ * Fired when some layer is removed from the map
+ *
+ * 🍂section Methods for Layers and Controls	*/
+
 L.Map.include({
+	/* 🍂method addLayer, this
+	 * 🍂param layer, ILayer
+	 * Adds the given layer to the map */
 	addLayer: function (layer) {
 		var id = L.stamp(layer);
 		if (this._layers[id]) { return layer; }
@@ -82,6 +139,9 @@ L.Map.include({
 		return this;
 	},
 
+	/* 🍂method removeLayer, this
+	 * 🍂param layer, ILayer
+	 * Removes the given layer from the map. */
 	removeLayer: function (layer) {
 		var id = L.stamp(layer);
 
@@ -111,10 +171,22 @@ L.Map.include({
 		return this;
 	},
 
+	/* 🍂method hasLayer, Boolean
+	 * 🍂param layer, ILayer
+	 * Returns `true` if the given layer is currently added to the map */
 	hasLayer: function (layer) {
 		return !!layer && (L.stamp(layer) in this._layers);
 	},
 
+	/* 🍂method eachLayer, this
+	 * 🍂param fn, Function
+	 * 🍂param context?, Object
+	 * Iterates over the layers of the map, optionally specifying context of the iterator function.
+	 * ```
+	 * map.eachLayer(function(layer){
+	 *     layer.bindPopup('Hello');
+	 * });
+	 * ``` */
 	eachLayer: function (method, context) {
 		for (var i in this._layers) {
 			method.call(context, this._layers[i]);
