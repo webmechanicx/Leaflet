@@ -5,7 +5,9 @@
  *
  * 🍂example
  *
- * `L.marker([50.5, 30.5]).addTo(map);`
+ * ```js
+ * L.marker([50.5, 30.5]).addTo(map);
+ * ```
  */
 
 L.Marker = L.Layer.extend({
@@ -173,7 +175,7 @@ L.Marker = L.Layer.extend({
 
 	/* 🍂method setZIndexOffset, this
 	 * 🍂param offset, Number
-	 * Changes the [zIndex offset](#Marker.zIndexOffset) of the marker.	*/
+	 * Changes the [zIndex offset](#marker-zindexoffset) of the marker.	*/
 	setZIndexOffset: function (offset) {
 		this.options.zIndexOffset = offset;
 		return this.update();

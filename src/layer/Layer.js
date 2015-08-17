@@ -11,7 +11,7 @@
  *
  * ```js
  * var layer = L.Marker(latlng).addTo(map);
- * layer.addTo(map*);
+ * layer.addTo(map);
  * layer.remove();
  * ```
  *
@@ -25,11 +25,11 @@
 
 L.Layer = L.Evented.extend({
 
-	/* 🍂section Inherited Options
-	 * Classes extending `L.Layer` will inherit the following options:	*/
+	// 🍂section Inherited Options
+	// Classes extending `L.Layer` will inherit the following options:
 	options: {
-		/* 🍂option pane, String, 'overlayPane'
-		 * By default the layer will be added to the map's [overlay pane](#map-overlaypane). Overriding this option will cause the layer to be placed on another pane by default. */
+		// 🍂option pane, String, 'overlayPane'
+		// By default the layer will be added to the map's [overlay pane](#map-overlaypane). Overriding this option will cause the layer to be placed on another pane by default.
 		pane: 'overlayPane',
 		nonBubblingEvents: []  // Array of events that should not be bubbled to DOM parents (like the map)
 	},
@@ -46,15 +46,15 @@ L.Layer = L.Evented.extend({
 		return this;
 	},
 
-	/* 🍂method remove, this
-	 * Removes the layer from the map it is currently active on. */
+	// 🍂method remove, this
+	// Removes the layer from the map it is currently active on.
 	remove: function () {
 		return this.removeFrom(this._map || this._mapToAdd);
 	},
 
-	/* 🍂method removeFrom
-	 * 🍂param map, Map
-	 * Removes the layer from the given map */
+	// 🍂method removeFrom, this
+	// 🍂param map, Map
+	// Removes the layer from the given map
 	removeFrom: function (obj) {
 		if (obj) {
 			obj.removeLayer(this);
@@ -62,9 +62,9 @@ L.Layer = L.Evented.extend({
 		return this;
 	},
 
-	/* 🍂method getPane, HTMLElement
-	 * 🍂param name?, String
-	 * Returns the `HTMLElement` representing the named pane on the map. If name is omitted, returns the pane for this layer. */
+	// 🍂method getPane, HTMLElement
+	// 🍂param name?, String
+	// Returns the `HTMLElement` representing the named pane on the map. If name is omitted, returns the pane for this layer.
 	getPane: function (name) {
 		return this._map.getPane(name ? (this.options[name] || name) : this.options.pane);
 	},
@@ -106,6 +106,22 @@ L.Layer = L.Evented.extend({
 		map.fire('layeradd', {layer: this});
 	}
 });
+
+/* 🍂section Extension methods
+ *
+ * Every layer should extend from `L.Layer` and (re-)implement the following methods.
+ *
+ * 🍂method onAdd, this
+ * 🍂param map, Map
+ * Should contain code that creates DOM elements for the layer, adds them to `map panes` where they should belong and puts listeners on relevant map events. Called on [`map.addLayer(layer)`](#map-addlayer).
+ *
+ * 🍂method onRemove, this
+ * 🍂param map, Map
+ * Should contain all clean up code that removes the layer's elements from the DOM and removes listeners previously added in [`onAdd`](#layer-onadd). Called on [`map.removeLayer(layer)`](#map-removelayer).
+ *
+ * 🍂method getEvents, Object
+ * This optional method should return an object like `{ viewreset: this._reset }` for [`addEventListener`](#event-addeventlistener). These events will be automatically added and removed from the map with your layer.
+ */
 
 
 /* 🍂namespace Map

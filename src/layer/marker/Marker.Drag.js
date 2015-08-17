@@ -8,7 +8,9 @@
  * 
  * Interaction handlers are properties of a marker instance that allow you to control interaction behavior in runtime, enabling or disabling certain features such as dragging (see `IHandler` methods). Example:
  * 
- * `marker.dragging.disable();`
+ * ```js
+ * marker.dragging.disable();
+ * ```
  * 
  * 🍂property dragging, IHandler
  * Marker dragging handler (by both mouse and touch).
