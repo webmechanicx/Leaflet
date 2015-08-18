@@ -101,6 +101,10 @@ L.TileLayer = L.GridLayer.extend({
 		}
 	},
 
+	// 🍂method setUrl, this
+	// 🍂param url, String
+	// 🍂param noRedraw?, Boolean
+	// Updates the layer's URL template and redraws it (unless `noRedraw` is set to `true`).
 	setUrl: function (url, noRedraw) {
 		this._url = url;
 
@@ -110,6 +114,12 @@ L.TileLayer = L.GridLayer.extend({
 		return this;
 	},
 
+	// 🍂method createTile, HTMLElement
+	// 🍂param coords, Object
+	// 🍂param done?, Function
+	// Called only internally, overrides GridLayer's [`createTile()`](#gridlayer-createtile)
+	// to return an `<img>` HTML element with the appropiate image URL given `coords`. The `done`
+	// callback is called when the tile has been loaded.
 	createTile: function (coords, done) {
 		var tile = document.createElement('img');
 
@@ -131,6 +141,10 @@ L.TileLayer = L.GridLayer.extend({
 		return tile;
 	},
 
+	// 🍂method getTileUrl, String
+	// 🍂param coords, Object
+	// Called only internally, returns the URL for a tile given its coordinates.
+	// Classes extending `TileLayer` can override this function to provide custom tile URL naming schemes.
 	getTileUrl: function (coords) {
 		return L.Util.template(this._url, L.extend({
 			r: this.options.detectRetina && L.Browser.retina && this.options.maxZoom > 0 ? '@2x' : '',

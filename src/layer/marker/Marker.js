@@ -62,9 +62,6 @@ L.Marker = L.Layer.extend({
 		nonBubblingEvents: ['click', 'dblclick', 'mouseover', 'mouseout', 'contextmenu']
 	},
 
-
-	/// FIXME: Most of the events are inherited from Layer or Draggable.
-
 	/* 🍂section
 	 *
 	 * You can subscribe to the following events using [these methods](#evented-method).
@@ -86,21 +83,6 @@ L.Marker = L.Layer.extend({
 	 *
 	 * 🍂event contextmenu, MouseEvent
 	 * Fired when the user right-clicks on the marker.
-	 *
-	 * 🍂event dragstart, Event
-	 * Fired when the user starts dragging the marker.
-	 *
-	 * 🍂event drag, Event
-	 * Fired repeatedly while the user drags the marker.
-	 *
-	 * 🍂event dragend, DragEndEvent
-	 * Fired when the user stops dragging the marker.
-	 *
-	 * 🍂event popupopen, PopupEvent
-	 * Fired when a popup bound to the marker is open.
-	 *
-	 * 🍂event popupclose, PopupEvent
-	 * Fired when a popup bound to the marker is closed.
 	 */
 
 
@@ -159,10 +141,8 @@ L.Marker = L.Layer.extend({
 		this._latlng = L.latLng(latlng);
 		this.update();
 
-		/// NOTE: We can describe an event inside a function with 🍂event, and everything will be sorted properly.
-
-		/* 🍂event move, Event
-		 * Fired when the marker is moved via `setLatLng`. Old and new coordinates are included in event arguments as `oldLatLng`, `latlng`. */
+		// 🍂event move, Event
+		// Fired when the marker is moved via `setLatLng`. Old and new coordinates are included in event arguments as `oldLatLng`, `latlng`.
 		return this.fire('move', {oldLatLng: oldLatLng, latlng: this._latlng});
 	},
 
@@ -369,13 +349,10 @@ L.Marker = L.Layer.extend({
 	}
 });
 
-/// FIXME: update() and toGeoJSON() are now Layer functions and no longer present.
-
-
 
 /*
  * 🍂factory L.marker
- * 🍂param latlng, LatLnt
+ * 🍂param latlng, LatLng
  * 🍂param options?, Marker options
  * Instantiates a Marker object given a geographical point and optionally an options object.
  */

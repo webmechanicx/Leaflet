@@ -101,6 +101,8 @@ L.Popup = L.Layer.extend({
 		// A custom CSS class name to assign to the popup.
 		className: '',
 
+		// 🍂option pane, String, 'popupPane'
+		// `Map pane` where the popup will be added.
 		pane: 'popupPane'
 	},
 
@@ -129,13 +131,22 @@ L.Popup = L.Layer.extend({
 			L.DomUtil.setOpacity(this._container, 1);
 		}
 
+		// 🍂namespace Map
+		// 🍂section Popup events
+		// 🍂event popupopen, PopupEvent
+		// Fired when a popup is opened in the map
 		map.fire('popupopen', {popup: this});
 
 		if (this._source) {
+			// 🍂namespace Layer
+			// 🍂section Popup events
+			// 🍂event popupopen, PopupEvent
+			// Fired when a popup bound to this layer is opened
 			this._source.fire('popupopen', {popup: this}, true);
 		}
 	},
 
+	// 🍂namespace Popup
 	// 🍂method openOn, this
 	// 🍂param map, Map
 	// Adds the popup to the map and closes the previous one. The same as `map.openPopup(popup)`.
@@ -152,13 +163,23 @@ L.Popup = L.Layer.extend({
 			L.DomUtil.remove(this._container);
 		}
 
+		// 🍂namespace Map
+		// 🍂section Popup events
+		// 🍂event popupclose, PopupEvent
+		// Fired when a popup in the map is closed
 		map.fire('popupclose', {popup: this});
 
 		if (this._source) {
+			// 🍂namespace Layer
+			// 🍂section Popup events
+			// 🍂event popupclose, PopupEvent
+			// Fired when a popup bound to this layer is closed
+			// 🍂namespace Popup
 			this._source.fire('popupclose', {popup: this}, true);
 		}
 	},
 
+	// 🍂namespace Popup
 	// 🍂method getLatLng, LatLng
 	// Returns the geographical point of popup.
 	getLatLng: function () {
@@ -191,6 +212,8 @@ L.Popup = L.Layer.extend({
 		return this;
 	},
 
+	// 🍂method getElement, String|HTMLElement
+	// Alias for [getContent()](#popup-getcontent)
 	getElement: function () {
 		return this._container;
 	},
@@ -229,6 +252,8 @@ L.Popup = L.Layer.extend({
 		return events;
 	},
 
+	// 🍂method isOpen, Boolean
+	// Returns `true` when the popup is visible on the map.
 	isOpen: function () {
 		return !!this._map && this._map.hasLayer(this);
 	},
