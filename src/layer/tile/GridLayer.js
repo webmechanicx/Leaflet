@@ -1,24 +1,105 @@
 /*
- * L.GridLayer is used as base class for grid-like layers like TileLayer.
+ * 🍂class GridLayer
+ * 🍂inherits Layer
+ * 🍂aka L.GridLayer
+ *
+ * Generic class for handling a tiled grid of HTML elements. This is the base class for all tile layers and replaces `TileLayer.Canvas`.
+ * GridLayer can be extended to create a tiled grid of HTML Elements like `<canvas>`, `<img>` or `<div>`. GridLayer will handle creating and animating these DOM elements for you.
+ *
+ *
+ * 🍂section Synchrohous usage
+ * 🍂example
+ *
+ * To create a custom layer, extend GridLayer and impliment the `createTile()` method, which will be passed a `Point` object with the `x`, `y`, and `z` (zoom level) coordinates to draw your tile.
+ *
+ * ```js
+ * var CanvasLayer = L.GridLayer.extend({
+ *     createTile: function(coords){
+ *         // create a <canvas> element for drawing
+ *         var tile = L.DomUtil.create('canvas', 'leaflet-tile');
+ *
+ *         // setup tile width and height according to the options
+ *         var size = this.getTileSize();
+ *         tile.width = size.x;
+ *         tile.height = size.y;
+ *
+ *         // get a canvas context and draw something on it using coords.x, coords.y and coords.z
+ *         var ctx = canvas.getContext('2d');
+ *
+ *         // return the tile so it can be rendered on screen
+ *         return tile;
+ *     }
+ * });
+ * ```
+ *
+ * 🍂section Asynchrohous usage
+ * 🍂example
+ *
+ * Tile creation can also be asyncronous, this is useful when using a third-party drawing library. Once the tile is finsihed drawing it can be passed to the done() callback.
+ *
+ * ```js
+ * var CanvasLayer = L.GridLayer.extend({
+ *     createTile: function(coords, done){
+ *         var error;
+ *
+ *         // create a <canvas> element for drawing
+ *         var tile = L.DomUtil.create('canvas', 'leaflet-tile');
+ *
+ *         // setup tile width and height according to the options
+ *         var size = this.getTileSize();
+ *         tile.width = size.x;
+ *         tile.height = size.y;
+ *
+ *         // draw something and pass the tile to the done() callback
+ *         done(error, tile);
+ *     }
+ * });
+ * ```
+ *
+ * 🍂section
  */
+
 
 L.GridLayer = L.Layer.extend({
 
 	options: {
 		pane: 'tilePane',
 
+		// 🍂option tileSize, Number|Point, 256
+		// Width and height of tiles in the grid. Use a number if width and height are equal, or `L.point(width, height)` otherwise.
 		tileSize: 256,
+
+		// 🍂option opacity, Number, 1.0
+		// Opacity of the tiles. Can be used in the `createTile()` function.
 		opacity: 1,
 
+		// 🍂option updateWhenIdle, Boolean, depends
+		// If `false`, new tiles are loaded during panning, otherwise only after it (for better performance). `true` by default on mobile browsers, otherwise `false`.
 		updateWhenIdle: L.Browser.mobile,
+
+		// 🍂option updateInterval, Number, 200
+		// Tiles will not update more than once every `updateInterval` milliseconds.
 		updateInterval: 200,
 
+		// 🍂option attribution, String, null
+		// String to be shown in the attribution control, describes the layer data, e.g. "© Mapbox".
 		attribution: null,
+
+		// 🍂option zIndex, Number, null
+		// The explicit zIndex of the tile layer. Not set by default.
 		zIndex: null,
+
+		// 🍂option bounds, LatLngBounds, null
+		// If set, tiles will only be loaded inside inside the set `LatLngBounds`.
 		bounds: null,
 
-		minZoom: 0
-		// maxZoom: <Number>
+		// 🍂option minZoom, Number, 0
+		// The minimum zoom level that tiles will be loaded at. By default the entire map.
+		minZoom: 0,
+
+		// 🍂option maxZoom, Number, null
+		// The maximum zoom level that tiles will be loaded at.
+		maxZoom: null
 	},
 
 	initialize: function (options) {
@@ -670,6 +751,9 @@ L.GridLayer = L.Layer.extend({
 	}
 });
 
+// 🍂factory L.gridLayer
+// 🍂param options?, GridLayer options
+// Creates a new instance of GridLayer with the supplied options.
 L.gridLayer = function (options) {
 	return new L.GridLayer(options);
 };

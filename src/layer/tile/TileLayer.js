@@ -1,7 +1,8 @@
 /*
  * 🍂class TileLayer
+ * 🍂inherits GridLayer
+ * 🍂aka L.TileLayer
  * Used to load and display tile layers on the map. Extends `GridLayer`.
- *
  *
  * 🍂example
  *
@@ -25,6 +26,8 @@
  * ```
  * L.tileLayer('http://{s}.somedomain.com/{foo}/{z}/{x}/{y}.png', {foo: 'bar'});
  * ```
+ *
+ * 🍂section
  */
 
 
@@ -43,15 +46,32 @@ L.TileLayer = L.GridLayer.extend({
 		// Maximum zoom number the tiles source has available. If it is specified, the tiles on all zoom levels higher than `maxNativeZoom` will be loaded from `maxZoom` level and auto-scaled.
 		maxNativeZoom: null,
 
-		//
-
+		// 🍂option subdomains, String|String[], 'abc'
+		// Subdomains of the tile service. Can be passed in the form of one string (where each letter is a subdomain name) or an array of strings.
 		subdomains: 'abc',
+
+		// 🍂option errorTileUrl, String, ''
+		// URL to the tile image to show in place of the tile that failed to load.
 		errorTileUrl: '',
+
+		// 🍂option zoomOffset, Number, 0
+		// The zoom number used in tile URLs will be offset with this value.
 		zoomOffset: 0,
 
+		// 🍂option tms, Boolean, false
+		// If `true`, inverses Y axis numbering for tiles (turn this on for TMS services).
 		tms: false,
+
+		// 🍂option zoomReverse, Boolean, false
+		// If set to true, the zoom number used in tile URLs will be reversed (`maxZoom - zoom` instead of `zoom`)
 		zoomReverse: false,
+
+		// 🍂option detectRetina, Boolean, false
+		// If `true` and user is on a retina display, it will request four tiles of half the specified size and a bigger zoom level in place of one to utilize the high resolution.
 		detectRetina: false,
+
+		// 🍂option crossOrigin, Boolean, false
+		// If true, all tiles will have their crossOrigin attribute set to ''. This is needed if you want to access tile pixel data.
 		crossOrigin: false
 	},
 
