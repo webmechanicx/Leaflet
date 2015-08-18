@@ -1,17 +1,54 @@
 /*
- * L.TileLayer is used for standard xyz-numbered tile layers.
+ * 🍂class TileLayer
+ * Used to load and display tile layers on the map. Extends `GridLayer`.
+ *
+ *
+ * 🍂example
+ *
+ * ```js
+ * L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png?{foo}', {foo: 'bar'}).addTo(map);
+ * ```
+ *
+ * 🍂section URL template
+ * 🍂example
+ *
+ * A string of the following form:
+ *
+ * ```
+ * 'http://{s}.somedomain.com/blabla/{z}/{x}/{y}{r}.png'
+ * ```
+ *
+ * `{s}` means one of the available subdomains (used sequentially to help with browser parallel requests per domain limitation; subdomain values are specified in options; `a`, `b` or `c` by default, can be omitted), `{z}` — zoom level, `{x}` and `{y}` — tile coordinates. `{r}` can be used to add @2x to the URL to load retina tiles.
+ *
+ * You can use custom keys in the template, which will be [evaluated](#util-template) from TileLayer options, like this:
+ *
+ * ```
+ * L.tileLayer('http://{s}.somedomain.com/{foo}/{z}/{x}/{y}.png', {foo: 'bar'});
+ * ```
  */
+
 
 L.TileLayer = L.GridLayer.extend({
 
 	options: {
+		// 🍂option minZoom, Number, 0
+		// Minimum zoom number.
+		minZoom: 0,
+
+		// 🍂option maxZoom, Number, 18
+		// Maximum zoom number.
 		maxZoom: 18,
+
+		// 🍂option maxNativeZoom, Number, null
+		// Maximum zoom number the tiles source has available. If it is specified, the tiles on all zoom levels higher than `maxNativeZoom` will be loaded from `maxZoom` level and auto-scaled.
+		maxNativeZoom: null,
+
+		//
 
 		subdomains: 'abc',
 		errorTileUrl: '',
 		zoomOffset: 0,
 
-		maxNativeZoom: null, // Number
 		tms: false,
 		zoomReverse: false,
 		detectRetina: false,
@@ -152,6 +189,12 @@ L.TileLayer = L.GridLayer.extend({
 		}
 	}
 });
+
+
+// 🍂factory L.tilelayer
+// 🍂param urlTemplate, String
+// 🍂param options?, TileLayer options
+// Instantiates a tile layer object given a `URL template` and optionally an options object.
 
 L.tileLayer = function (url, options) {
 	return new L.TileLayer(url, options);

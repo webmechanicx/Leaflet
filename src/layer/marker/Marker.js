@@ -1,5 +1,6 @@
 /*
  * 🍂class Marker
+ * 🍂inherits Layer
  * 🍂aka L.Marker
  * L.Marker is used to display clickable/draggable icons on the map. Extends `Layer`.
  *
@@ -12,51 +13,49 @@
 
 L.Marker = L.Layer.extend({
 
-		/* 🍂section
-		 * 🍂aka Marker options	*/
 	options: {
-		/* 🍂option icon, L.Icon, *
-		 * Icon class to use for rendering the marker. See [Icon documentation](#L.Icon) for details on how to customize the marker icon. Set to new `L.Icon.Default()` by default.	*/
+		// 🍂option icon, L.Icon, *
+		// Icon class to use for rendering the marker. See [Icon documentation](#L.Icon) for details on how to customize the marker icon. Set to new `L.Icon.Default()` by default.
 		icon: new L.Icon.Default(),
 
-		/* 🍂option interactive, Boolean, true
-		 * If `false`, the marker will not emit mouse events and will act as a part of the underlying map.	*/
+		// 🍂option interactive, Boolean, true
+		// If `false`, the marker will not emit mouse events and will act as a part of the underlying map.
 		interactive: true,
 
-		/* 🍂option draggable, Boolean, false
-		 * Whether the marker is draggable with mouse/touch or not.	*/
-		// draggable: false,
+		// 🍂option draggable, Boolean, false
+		// Whether the marker is draggable with mouse/touch or not.
+		draggable: false,
 
-		/* 🍂option keyboard, Boolean, true
-		 * Whether the marker can be tabbed to with a keyboard and clicked by pressing enter.	*/
+		// 🍂option keyboard, Boolean, true
+		// Whether the marker can be tabbed to with a keyboard and clicked by pressing enter.
 		keyboard: true,
 
-		/* 🍂option title, String, ''
-		 * Text for the browser tooltip that appear on marker hover (no tooltip by default).	*/
-		// title: '',
+		// 🍂option title, String, ''
+		// Text for the browser tooltip that appear on marker hover (no tooltip by default).
+		title: '',
 
-		/* 🍂option alt, String, ''
-		 * Text for the `alt` attribute of the icon image (useful for accessibility).	*/
-		// alt: '',
+		// 🍂option alt, String, ''
+		// Text for the `alt` attribute of the icon image (useful for accessibility).
+		alt: '',
 
-		/* 🍂option zIndexOffset, Number, 0
-		 * By default, marker images zIndex is set automatically based on its latitude. Use this option if you want to put the marker on top of all others (or below), specifying a high value like `1000` (or high negative value, respectively).	*/
+		// 🍂option zIndexOffset, Number, 0
+		// By default, marker images zIndex is set automatically based on its latitude. Use this option if you want to put the marker on top of all others (or below), specifying a high value like `1000` (or high negative value, respectively).
 		zIndexOffset: 0,
 
-		/* 🍂option opacity, Number, 1.0
-		 * The opacity of the marker.	*/
+		// 🍂option opacity, Number, 1.0
+		// The opacity of the marker.
 		opacity: 1,
 
-		/* 🍂option riseOnHover, Boolean, false
-		 * If `true`, the marker will get on top of others when you hover the mouse over it.	*/
-		// riseOnHover: false,
+		// 🍂option riseOnHover, Boolean, false
+		// If `true`, the marker will get on top of others when you hover the mouse over it.
+		riseOnHover: false,
 
-		/* 🍂option riseOffset, Number, 250
-		 * The z-index offset used for the `riseOnHover` feature.	*/
+		// 🍂option riseOffset, Number, 250
+		// The z-index offset used for the `riseOnHover` feature.
 		riseOffset: 250,
 
-		/* 🍂option icon, L.Icon, *
-		 * `Map pane` where the markers icon will be added.	*/
+		// 🍂option pane, String, 'markerPane'
+		// `Map pane` where the markers icon will be added.
 		pane: 'markerPane',
 
 		/// FIXME: shadowPane is no longer a valid option
@@ -68,7 +67,7 @@ L.Marker = L.Layer.extend({
 
 	/* 🍂section
 	 *
-	 * You can subscribe to the following events using [these methods](#events).
+	 * You can subscribe to the following events using [these methods](#evented-method).
 	 *
 	 * 🍂event click, MouseEvent
 	 * Fired when the user clicks (or taps) the marker.
@@ -96,12 +95,6 @@ L.Marker = L.Layer.extend({
 	 *
 	 * 🍂event dragend, DragEndEvent
 	 * Fired when the user stops dragging the marker.
-	 *
-	 * 🍂event add, Event
-	 * Fired when the marker is added to the map.
-	 *
-	 * 🍂event remove, Event
-	 * Fired when the marker is removed from the map.
 	 *
 	 * 🍂event popupopen, PopupEvent
 	 * Fired when a popup bound to the marker is open.

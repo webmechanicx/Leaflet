@@ -1,5 +1,6 @@
 /*
  * 🍂class Popup
+ * 🍂inherits Layer
  * 🍂aka L.Popup
  * Used to open popups in certain places of the map. Use [Map.openPopup](#map-openpopup) to
  * open popups while making sure that only one popup is open at one time
@@ -396,12 +397,14 @@ L.popup = function (options, source) {
 // 🍂section Methods for Layers and Controls
 L.Map.include({
 	// 🍂method openPopup, this
-	// 🍂param popupContent, String|HTMLElement|Popup
+	// 🍂param popup, Popup
+	// Opens the specified popup while closing the previously opened (to make sure only one is opened at one time for usability).
+	// 🍂alternative
+	// 🍂param content, String|HTMLElement
 	// 🍂param latlng, LatLng
 	// 🍂param options?, Popup options
-	// Creates a popup with the specified options and opens it in the given point on a map.
-	// If an instance of `Popup` is passed as first parameter, latlng and options are ignored.
-	openPopup: function (popup, latlng, options) { // (Popup) or (String || HTMLElement, LatLng[, Object])
+	// Creates a popup with the specified content and options and opens it in the given point on a map.
+	openPopup: function (popup, latlng, options) {
 		if (!(popup instanceof L.Popup)) {
 			popup = new L.Popup(options).setContent(popup);
 		}

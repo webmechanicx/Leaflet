@@ -1,6 +1,7 @@
 
 /*
  * 🍂class Layer
+ * 🍂inherits Evented
  * 🍂aka L.Layer
  * 🍂aka ILayer
  *
@@ -25,7 +26,6 @@
 
 L.Layer = L.Evented.extend({
 
-	// 🍂section Inherited Options
 	// Classes extending `L.Layer` will inherit the following options:
 	options: {
 		// 🍂option pane, String, 'overlayPane'
@@ -34,7 +34,7 @@ L.Layer = L.Evented.extend({
 		nonBubblingEvents: []  // Array of events that should not be bubbled to DOM parents (like the map)
 	},
 
-	/* 🍂section Inherited methods
+	/* 🍂section
 	 * Classes extending `L.Layer` will inherit the following methods:
 	 *
 	 * 🍂method addTo, this

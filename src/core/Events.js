@@ -1,9 +1,40 @@
 /*
- * L.Evented is a base class that Leaflet classes inherit from to handle custom events.
+ * 🍂class Evented
+ * 🍂aka L.Evented
+ *
+ * A set of methods shared between event-powered classes (like `Map` and `Marker`). Generally, events allow you to execute some function when something happens with an object (e.g. the user clicks on the map, causing the map to fire `'click'` event).
+ *
+ * 🍂example
+ *
+ * ```js
+ * map.on('click', function(e) {
+ * 	alert(e.latlng);
+ * } );
+ * ```
+ *
+ * Leaflet deals with event listeners by reference, so if you want to add a listener and then remove it, define it as a function:
+ *
+ * ```js
+ * function onClick(e) { ... }
+ *
+ * map.on('click', onClick);
+ * map.off('click', onClick);
+ * ```
  */
+
 
 L.Evented = L.Class.extend({
 
+	/* 🍂method on, this
+	 * 🍂param type, String
+	 * 🍂param fn, Function
+	 * 🍂param context?, Object
+	 * Adds a listener function (`fn`) to a particular event type of the object. You can optionally specify the context of the listener (object the this keyword will point to). You can also pass several space-separated types (e.g. `'click dblclick'`).
+	 *
+	 * 🍂alternative
+	 * 🍂param eventMap, Object
+	 * Adds a set of type/listener pairs, e.g. `{click: onClick, mousemove: onMouseMove}`
+	 */
 	on: function (types, fn, context) {
 
 		// types can be a map of types/handlers
@@ -26,6 +57,19 @@ L.Evented = L.Class.extend({
 		return this;
 	},
 
+	/* 🍂method off, this
+	 * 🍂param type, String
+	 * 🍂param fn?, Function
+	 * 🍂param context?, Object
+	 * Removes a previously added listener function. If no function is specified, it will remove all the listeners of that particular event from the object. Note that if you passed a custom context to `on`, you must pass the same context to `off` in order to remove the listener.
+	 *
+	 * 🍂alternative
+	 * 🍂param eventMap, Object
+	 * Removes a set of type/listener pairs.
+	 *
+	 * 🍂alternative
+	 * Removes all listeners to all events on the object.
+	 */
 	off: function (types, fn, context) {
 
 		if (!types) {
@@ -127,6 +171,10 @@ L.Evented = L.Class.extend({
 		}
 	},
 
+	// 🍂method fire, this
+	// 🍂param type, String
+	// 🍂param data?, Object
+	// Fires an event of the specified type. You can optionally provide an data object — the first argument of the listener function will contain its properties.
 	fire: function (type, data, propagate) {
 		if (!this.listens(type, propagate)) { return this; }
 
@@ -160,6 +208,9 @@ L.Evented = L.Class.extend({
 		return this;
 	},
 
+	// 🍂method listens, Boolean
+	// 🍂param type, String
+	// Returns `true` if a particular event type has any listeners attached to it.
 	listens: function (type, propagate) {
 		var events = this._events;
 
@@ -174,6 +225,9 @@ L.Evented = L.Class.extend({
 		return false;
 	},
 
+	// 🍂method once, this
+	// 🍂param …
+	// Behaves as [`on(…)`](#evented-on), except the listener will only get fired once and then removed.
 	once: function (types, fn, context) {
 
 		if (typeof types === 'object') {
@@ -219,10 +273,33 @@ L.Evented = L.Class.extend({
 var proto = L.Evented.prototype;
 
 // aliases; we should ditch those eventually
+
+// 🍂method addEventListener, this
+// 🍂param …
+// Alias to [`on(…)`](#evented-on)
 proto.addEventListener = proto.on;
+
+// 🍂method removeEventListener, this
+// 🍂param …
+// Alias to [`off(…)`](#evented-off)
+
+// 🍂method clearAllEventListeners, this
+// Alias to [`off()`](#evented-off)
 proto.removeEventListener = proto.clearAllEventListeners = proto.off;
+
+// 🍂method addOneTimeEventListener, this
+// 🍂param …
+// Alias to [`once(…)`](#evented-once)
 proto.addOneTimeEventListener = proto.once;
+
+// 🍂method fireEvent, this
+// 🍂param …
+// Alias to [`fire(…)`](#evented-fire)
 proto.fireEvent = proto.fire;
+
+// 🍂method hasEventListeners, this
+// 🍂param …
+// Alias to [`listens(…)`](#evented-listens)
 proto.hasEventListeners = proto.listens;
 
 L.Mixin = {Events: proto};
