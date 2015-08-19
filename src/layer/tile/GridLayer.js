@@ -7,7 +7,7 @@
  * GridLayer can be extended to create a tiled grid of HTML Elements like `<canvas>`, `<img>` or `<div>`. GridLayer will handle creating and animating these DOM elements for you.
  *
  *
- * 🍂section Synchrohous usage
+ * 🍂section Synchronous usage
  * 🍂example
  *
  * To create a custom layer, extend GridLayer and impliment the `createTile()` method, which will be passed a `Point` object with the `x`, `y`, and `z` (zoom level) coordinates to draw your tile.

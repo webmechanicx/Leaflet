@@ -18,6 +18,8 @@
 
 L.TileLayer.WMS = L.TileLayer.extend({
 
+	// 🍂section
+	// 🍂aka TileLayer.WMS options
 	defaultWmsParams: {
 		service: 'WMS',
 		request: 'GetMap',
