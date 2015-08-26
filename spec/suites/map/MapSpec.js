@@ -693,7 +693,7 @@ describe("Map", function () {
 			expect(mapSpy.called).not.to.be.ok();
 		});
 
-		it("mouseout is only forwared if fired on the original target", function () {
+		it.skip("mouseout is only forwared if fired on the original target", function () {
 			var mapSpy = sinon.spy(),
 				layerSpy = sinon.spy(),
 				otherSpy = sinon.spy();
