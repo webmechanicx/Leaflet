@@ -218,6 +218,7 @@ L.GridLayer = L.Layer.extend({
 	},
 
 	// 🍂section Extension methods
+	// Layers extending `GridLayer` shall reimplement the following method.
 	// 🍂method createTile(coords: Object, done?: Function): HTMLElement
 	// Called only internally, must be overriden by classes extending `GridLayer`.
 	// Returns the `HTMLElement` corresponding to the given `coords`. If the `done` callback

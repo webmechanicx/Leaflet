@@ -24,34 +24,34 @@ L.TileLayer.WMS = L.TileLayer.extend({
 		service: 'WMS',
 		request: 'GetMap',
 
-		// 🍂option layers, String, ''
+		// 🍂option layers: String = ''
 		// **(required)** Comma-separated list of WMS layers to show.
 		layers: '',
 
-		// 🍂option styles, String, ''
+		// 🍂option styles: String = ''
 		// Comma-separated list of WMS styles.
 		styles: '',
 
-		// 🍂option format, String, 'image/jpeg'
+		// 🍂option format: String = 'image/jpeg'
 		// WMS image format (use `'image/png'` for layers with transparency).
 		format: 'image/jpeg',
 
-		// 🍂option styles, Boolean, false
+		// 🍂option styles: Boolean = false
 		// If `true`, the WMS service will return images with transparency.
 		transparent: false,
 
-		// 🍂option version, String, '1.1.1'
+		// 🍂option version: String = '1.1.1'
 		// Version of the WMS service to use
 		version: '1.1.1'
 	},
 
 	options: {
-		// 🍂option crs, CRS, null
+		// 🍂option crs: CRS = null
 		// Coordinate Reference System to use for the WMS requests, defaults to
 		// map CRS. Don't change this if you're not sure what it means.
 		crs: null,
 
-		// 🍂option uppercase, Boolean, false
+		// 🍂option uppercase: Boolean = false
 		// If `true`, WMS request parameter keys will be uppercase.
 		uppercase: false
 	},
@@ -104,9 +104,7 @@ L.TileLayer.WMS = L.TileLayer.extend({
 			(this.options.uppercase ? '&BBOX=' : '&bbox=') + bbox;
 	},
 
-	// 🍂method setParams, this
-	// 🍂param params, Object
-	// 🍂param noRedraw?, Boolean
+	// 🍂method setParams(params: Object, noRedraw?: Boolean): this
 	// Merges an object with the new parameters and re-requests tiles on the current screen (unless `noRedraw` was set to true).
 	setParams: function (params, noRedraw) {
 
@@ -121,9 +119,7 @@ L.TileLayer.WMS = L.TileLayer.extend({
 });
 
 
-// 🍂factory L.tileLayer.wms
-// 🍂param baseUrl, String
-// 🍂param options, TileLayer.WMS options
+// 🍂factory L.tileLayer.wms(baseUrl: String, options: TileLayer.WMS options)
 // Instantiates a WMS tile layer object given a base URL of the WMS service and a WMS parameters/options object.
 L.tileLayer.wms = function (url, options) {
 	return new L.TileLayer.WMS(url, options);
