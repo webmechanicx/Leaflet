@@ -9,6 +9,8 @@
 
 L.Path = L.Layer.extend({
 
+	// 🍂section
+	// 🍂aka Path options
 	options: {
 		// 🍂option stroke: Boolean = true
 		// Whether to draw stroke along the path. Set it to `false` to disable borders on polygons or circles.
@@ -22,7 +24,7 @@ L.Path = L.Layer.extend({
 		// Stroke width in pixels
 		weight: 3,
 
-		// 🍂option opacity: Number: 1.0
+		// 🍂option opacity: Number = 1.0
 		// Stroke opacity
 		opacity: 1,
 
