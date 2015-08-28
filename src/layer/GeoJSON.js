@@ -196,9 +196,17 @@ var PointToGeoJSON = {
 };
 
 L.Marker.include(PointToGeoJSON);
+
+// 🍂namespace CircleMarker
+// 🍂method toGeoJSON(): Object
+// Returns a [`GeoJSON`](http://en.wikipedia.org/wiki/GeoJSON) representation of the circle marker (as a GeoJSON `Point` Feature).
 L.Circle.include(PointToGeoJSON);
 L.CircleMarker.include(PointToGeoJSON);
 
+
+// 🍂namespace Polyline
+// 🍂method toGeoJSON(): Object
+// Returns a [`GeoJSON`](http://en.wikipedia.org/wiki/GeoJSON) representation of the polyline (as a GeoJSON `LineString` or `MultiLineString` Feature).
 L.Polyline.prototype.toGeoJSON = function () {
 	var multi = !L.Polyline._flat(this._latlngs);
 
@@ -210,6 +218,9 @@ L.Polyline.prototype.toGeoJSON = function () {
 	});
 };
 
+// 🍂namespace Polygon
+// 🍂method toGeoJSON(): Object
+// Returns a [`GeoJSON`](http://en.wikipedia.org/wiki/GeoJSON) representation of the polygon (as a GeoJSON `Polygon` or `MultiPolygon` Feature).
 L.Polygon.prototype.toGeoJSON = function () {
 	var holes = !L.Polyline._flat(this._latlngs),
 	    multi = holes && !L.Polyline._flat(this._latlngs[0]);

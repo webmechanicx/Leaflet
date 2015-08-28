@@ -76,10 +76,6 @@ L.Layer = L.Evented.extend({
 		return this;
 	},
 
-	isPopupOpen: function() {
-		return this._popup.isOpen();
-	},
-
 	_layerAdd: function (e) {
 		var map = e.target;
 
@@ -116,6 +112,9 @@ L.Layer = L.Evented.extend({
  *
  * 🍂method getEvents(): Object
  * This optional method should return an object like `{ viewreset: this._reset }` for [`addEventListener`](#event-addeventlistener). These events will be automatically added and removed from the map with your layer.
+ *
+ * 🍂method getAttribution(): String
+ * This optional method should return a string containing HTML to be shown on the `Attribution control` whenever the layer is visible.
  */
 
 

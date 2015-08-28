@@ -40,6 +40,9 @@ L.SVG = L.Renderer.extend({
 	_initPath: function (layer) {
 		var path = layer._path = L.SVG.create('path');
 
+		// 🍂namespace Path
+		// 🍂option className: string = null
+		// Custom class name set on an element. Only for SVG renderer.
 		if (layer.options.className) {
 			L.DomUtil.addClass(path, layer.options.className);
 		}
