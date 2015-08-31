@@ -48,8 +48,8 @@ L.Path = L.Layer.extend({
 		// Whether to fill the path with color. Set it to `false` to disable filling on polygons or circles.
 		fill: false,
 
-		// 🍂option fillColor: String = same as [`color`](#path-color)
-		// Fill color.
+		// 🍂option fillColor: String = *
+		// Fill color. Defaults to the value of the [`color`](#path-color) option
 		fillColor: null,
 
 		// 🍂option fillOpacity: Number = 0.2
