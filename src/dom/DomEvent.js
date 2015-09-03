@@ -1,12 +1,25 @@
 /*
- * L.DomEvent contains functions for working with DOM events.
- * Inspired by John Resig, Dean Edwards and YUI addEvent implementations.
+ * 🍂namespace DomEvent
+ * Utility functions to work with the [DOM events](https://developer.mozilla.org/docs/Web/API/Event), used by Leaflet internally.
  */
+
+// Inspired by John Resig, Dean Edwards and YUI addEvent implementations.
+
+
 
 var eventsKey = '_leaflet_events';
 
 L.DomEvent = {
 
+	// 🍂function on(el: HTMLElement, types: String, fn: Function, context?: Object): this
+	// Adds a listener function (`fn`) to a particular DOM event type of the
+	// element `el`. You can optionally specify the context of the listener
+	// (object the `this` keyword will point to). You can also pass several
+	// space-separated types (e.g. `'click dblclick'`).
+
+	// 🍂alternative
+	// 🍂function on(el: HTMLElement, eventMap: Object, context?: Object): this
+	// Adds a set of type/listener pairs, e.g. `{click: onClick, mousemove: onMouseMove}`
 	on: function (obj, types, fn, context) {
 
 		if (typeof types === 'object') {
@@ -24,6 +37,14 @@ L.DomEvent = {
 		return this;
 	},
 
+	// 🍂function off(el: HTMLElement, types: String, fn: Function, context?: Object)
+	// Removes a previously added listener function. If no function is specified,
+	// it will remove all the listeners of that particular DOM event from the element.
+	// Note that if you passed a custom context to on, you must pass the same
+	// context to `off` in order to remove the listener.
+
+	// 🍂alternative
+	// 🍂function off(el: HTMLElement, types: eventMap: Object, context?: Object): this
 	off: function (obj, types, fn, context) {
 
 		if (typeof types === 'object') {
@@ -126,6 +147,13 @@ L.DomEvent = {
 		return this;
 	},
 
+	// 🍂function stopPropagation(ev: DOMEvent): this
+	// Stop the given event from propagation to parent elements. Used inside the listener functions:
+	// ```js
+	// L.DomEvent.on(div, 'click', function (ev) {
+	// 	L.DomEvent.stopPropagation(ev);
+	// });
+	// ```
 	stopPropagation: function (e) {
 
 		if (e.stopPropagation) {
@@ -140,10 +168,15 @@ L.DomEvent = {
 		return this;
 	},
 
+	// 🍂function disableScrollPropagation(el: HTMLElement): this
+	// Adds `stopPropagation` to the element's `'mousewheel'` events (plus browser variants).
 	disableScrollPropagation: function (el) {
 		return L.DomEvent.on(el, 'mousewheel MozMousePixelScroll', L.DomEvent.stopPropagation);
 	},
 
+	// 🍂function disableClickPropagation(el: HTMLElement): this
+	// Adds `stopPropagation` to the element's `'click'`, `'doubleclick'`,
+	// `'mousedown'` and `'touchstart'` events (plus browser variants).
 	disableClickPropagation: function (el) {
 		var stop = L.DomEvent.stopPropagation;
 
@@ -155,6 +188,11 @@ L.DomEvent = {
 		});
 	},
 
+	// 🍂function preventDefault(ev: DOMEvent): this
+	// Prevents the default action of the DOM Event `ev` from happening (such as
+	// following a link in the href of the a element, or doing a POST request
+	// with page reload when a `<form>` is submitted).
+	// Use it inside listener functions.
 	preventDefault: function (e) {
 
 		if (e.preventDefault) {
@@ -165,12 +203,17 @@ L.DomEvent = {
 		return this;
 	},
 
+	// 🍂function stop(ev): this
+	// Does `stopPropagation` and `preventDefault` at the same time.
 	stop: function (e) {
 		return L.DomEvent
 			.preventDefault(e)
 			.stopPropagation(e);
 	},
 
+	// 🍂function getMousePosition(ev: DOMEvent, container?: HTMLElement): Point
+	// Gets normalized mouse position from a DOM event relative to the
+	// `container` or to the whole page if not specified.
 	getMousePosition: function (e, container) {
 		if (!container) {
 			return new L.Point(e.clientX, e.clientY);
@@ -183,6 +226,8 @@ L.DomEvent = {
 			e.clientY - rect.top - container.clientTop);
 	},
 
+	// 🍂function getWheelDelta(ev: DOMEvent): Number
+	// Gets normalized wheel delta from a mousewheel DOM event.
 	getWheelDelta: function (e) {
 
 		var delta = 0;
@@ -247,5 +292,10 @@ L.DomEvent = {
 	}
 };
 
+// 🍂function addListener(…): this
+// Alias to [`L.DomEvent.on`](#domevent-on)
 L.DomEvent.addListener = L.DomEvent.on;
+
+// 🍂function removeListener(…): this
+// Alias to [`L.DomEvent.off`](#domevent-off)
 L.DomEvent.removeListener = L.DomEvent.off;
