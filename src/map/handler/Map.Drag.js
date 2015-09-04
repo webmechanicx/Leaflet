@@ -2,6 +2,8 @@
  * L.Handler.MapDrag is used to make the map draggable (with panning inertia), enabled by default.
  */
 
+// 🍂namespace Map
+// 🍂section Interaction Options
 L.Map.mergeOptions({
 	dragging: true,
 
@@ -12,6 +14,14 @@ L.Map.mergeOptions({
 
 	// TODO refactor, move to CRS
 	worldCopyJump: false
+
+	// 🍂option maxBoundsViscosity: Number = 0.0
+	// If `maxBounds` is set, this option will control how solid the bounds
+	// are when dragging the map around. The default value of `0.0` allows the
+	// user to drag outside the bounds at normal speed, higher values will
+	// slow down map dragging outside bounds, and `1.0` makes the bounds fully
+	// solid, preventing the user from dragging outside the bounds.
+	maxBoundsViscosity: 0.0
 });
 
 L.Map.Drag = L.Handler.extend({

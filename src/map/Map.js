@@ -1,22 +1,81 @@
 /*
- * L.Map is the central class of the API - it is used to create a map.
+ * 🍂class Map
+ * 🍂aka L.Map
+ * 🍂inherits Evented
+ *
+ * The central class of the API — it is used to create a map on a page and manipulate it.
+ *
+ * 🍂example
+ *
+ * ```js
+ * // initialize the map on the "map" div with a given center and zoom
+ * var map = L.map('map', {
+ * 	center: [51.505, -0.09],
+ * 	zoom: 13
+ * });
+ * ```
+ *
  */
 
 L.Map = L.Evented.extend({
 
 	options: {
+		// 🍂section Map State Options
+		// 🍂option crs: CRS = L.CRS.EPSG3857
+		// The [Coordinate Reference System](#crs) to use. Don't change this if you're not
+		// sure what it means.
 		crs: L.CRS.EPSG3857,
 
-		/*
-		center: LatLng,
-		zoom: Number,
-		layers: Array,
-		*/
+		// 🍂option center: LatLng = null
+		// Initial geographic center of the map
+		center: null,
 
+		// 🍂option zoom: Number = null
+		// Initial map zoom level
+		zoom: null,
+
+		// 🍂option minZoom: Number = undefined
+		// Minimum zoom level of the map. Overrides any `minZoom` option set on map layers.
+		minZoom: undefined,
+
+		// 🍂option maxZoom: Number = undefined
+		// Maximum zoom level of the map. Overrides any `maxZoom` option set on map layers.
+		minZoom: undefined,
+
+		// 🍂option layers: Layer[] = []
+		// Array of layers that will be added to the map initially
+		layers: [],
+
+		// 🍂option maxBounds: LatLngBounds = null
+		// When this option is set, the map restricts the view to the given
+		// geographical bounds, bouncing the user back when he tries to pan
+		// outside the view. To set the restriction dynamically, use
+		// [`setMaxBounds`](#map-setmaxbounds) method.
+		maxBounds: null,
+
+		// 🍂option renderer
+		// The default method for drawing vector layers on the map. `L.SVG`
+		// or `L.Canvas` by default depending on browser support.
+		renderer: null,
+
+
+		// 🍂section Animation Options
+		// 🍂option fadeAnimation: Boolean = true
+		// Whether the tile fade animation is enabled. By default it's enabled
+		// in all browsers that support CSS3 Transitions except Android.
 		fadeAnimation: true,
-		trackResize: true,
+
+		// 🍂option markerZoomAnimation: Boolean = true
+		// Whether markers animate their zoom with the zoom animation, if disabled
+		// they will disappear for the length of the animation. By default it's
+		// enabled in all browsers that support CSS3 Transitions except Android.
 		markerZoomAnimation: true,
-		maxBoundsViscosity: 0.0
+
+
+		// 🍂section Interaction Options
+		// 🍂option trackResize: Boolean = true
+		// Whether the map automatically handles browser window resize to update itself.
+		trackResize: true
 	},
 
 	initialize: function (id, options) { // (HTMLElement or String, Object)
@@ -53,15 +112,20 @@ L.Map = L.Evented.extend({
 	},
 
 
-	// public methods that modify map state
+	// 🍂section Methods for modifying map state
 
-	// replaced by animation-powered implementation in Map.PanAnimation.js
+	// 🍂method setView(center: LatLnt, zoom: Number, options?: Zoom/Pan options): this
+	// Sets the view of the map (geographical center and zoom) with the given
+	// animation options.
 	setView: function (center, zoom) {
+		// replaced by animation-powered implementation in Map.PanAnimation.js
 		zoom = zoom === undefined ? this.getZoom() : zoom;
 		this._resetView(L.latLng(center), zoom);
 		return this;
 	},
 
+	// 🍂method setZoom(zoom: Number, options: Zoom/Pan options): this
+	// Sets the zoom of the map.
 	setZoom: function (zoom, options) {
 		if (!this._loaded) {
 			this._zoom = zoom;
@@ -70,14 +134,24 @@ L.Map = L.Evented.extend({
 		return this.setView(this.getCenter(), zoom, {zoom: options});
 	},
 
+	// 🍂method zoomIn(delta?: Number, options?: Zoom options): this
+	// Increases the zoom of the map by `delta` (`1` by default).
 	zoomIn: function (delta, options) {
 		return this.setZoom(this._zoom + (delta || 1), options);
 	},
 
+	// 🍂method zoomIn(delta?: Number, options?: Zoom options): this
+	// Decreases the zoom of the map by `delta` (`1` by default).
 	zoomOut: function (delta, options) {
 		return this.setZoom(this._zoom - (delta || 1), options);
 	},
 
+	// 🍂method setZoomAround(latlng: LatLng, zoom: Number, options: Zoom options): this
+	// Zooms the map while keeping a specified geographical point on the map
+	// stationary (e.g. used internally for scroll zoom and double-click zoom).
+	// 🍂alternative
+	// 🍂method setZoomAround(offset: Point, zoom: Number, options: Zoom options): this
+	// Zooms the map while keeping a specified pixel on the map (relative to the top-left corner) stationary.
 	setZoomAround: function (latlng, zoom, options) {
 		var scale = this.getZoomScale(zoom),
 		    viewHalf = this.getSize().divideBy(2),
@@ -113,19 +187,29 @@ L.Map = L.Evented.extend({
 		};
 	},
 
+	// 🍂method fitBounds(bounds: LatLngBounds, options: fitBounds options): this
+	// Sets a map view that contains the given geographical bounds with the
+	// maximum zoom level possible.
 	fitBounds: function (bounds, options) {
 		var target = this._getBoundsCenterZoom(bounds, options);
 		return this.setView(target.center, target.zoom, options);
 	},
 
+	// 🍂method fitWorld(options?: fitBounds options): this
+	// Sets a map view that mostly contains the whole world with the maximum
+	// zoom level possible.
 	fitWorld: function (options) {
 		return this.fitBounds([[-90, -180], [90, 180]], options);
 	},
 
+	// 🍂method panTo(latlng: LatLng, options?: Pan options): this
+	// Pans the map to a given center.
 	panTo: function (center, options) { // (LatLng)
 		return this.setView(center, this._zoom, {pan: options});
 	},
 
+	// 🍂method panBy(offset: Point): this
+	// Pans the map by a given number of pixels (animated).
 	panBy: function (offset) { // (Point)
 		// replaced with animated panBy in Map.PanAnimation.js
 		this.fire('movestart');
@@ -136,6 +220,8 @@ L.Map = L.Evented.extend({
 		return this.fire('moveend');
 	},
 
+	// 🍂method setMaxBounds(bounds: Bounds): this
+	// Restricts the map view to the given bounds (see the [maxBounds](#map-maxbounds) option).
 	setMaxBounds: function (bounds) {
 		bounds = L.latLngBounds(bounds);
 
@@ -154,6 +240,8 @@ L.Map = L.Evented.extend({
 		return this.on('moveend', this._panInsideMaxBounds);
 	},
 
+	// 🍂method setMinZoom(zoom: Number): this
+	// Sets the lower limit for the available zoom levels (see the [minZoom](#map-minzoom) option).
 	setMinZoom: function (zoom) {
 		this.options.minZoom = zoom;
 
@@ -164,6 +252,8 @@ L.Map = L.Evented.extend({
 		return this;
 	},
 
+	// 🍂method setMaxZoom(zoom: Number): this
+	// Sets the upper limit for the available zoom levels (see the [maxZoom](#map-maxzoom) option).
 	setMaxZoom: function (zoom) {
 		this.options.maxZoom = zoom;
 
@@ -174,6 +264,8 @@ L.Map = L.Evented.extend({
 		return this;
 	},
 
+	// 🍂method panInsideBounds(bounds: LatLngBounds, options?: Pan options): this
+	// Pans the map to the closest view that would lie inside the given bounds (if it's not already), controlling the animation using the options specific, if any.
 	panInsideBounds: function (bounds, options) {
 		var center = this.getCenter(),
 			newCenter = this._limitCenter(center, this._zoom, L.latLngBounds(bounds));
@@ -183,6 +275,19 @@ L.Map = L.Evented.extend({
 		return this.panTo(newCenter, options);
 	},
 
+	// 🍂method invalidateSize(options: Zoom/Pan options): this
+	// Checks if the map container size changed and updates the map if so —
+	// call it after you've changed the map size dynamically, also animating
+	// pan by default. If `options.pan` is `false`, panning will not occur.
+	// If `options.debounceMoveend` is `true`, it will delay `moveend` event so
+	// that it doesn't happen often even if the method is called many
+	// times in a row.
+
+	// 🍂alternative
+	// 🍂method invalidateSize(animate: Boolean): this
+	// Checks if the map container size changed and updates the map if so —
+	// call it after you've changed the map size dynamically, also animating
+	// pan by default.
 	invalidateSize: function (options) {
 		if (!this._loaded) { return this; }
 
@@ -226,6 +331,8 @@ L.Map = L.Evented.extend({
 		});
 	},
 
+	// 🍂method stop(): this
+	// Stops the currently running `panTo` or `flyTo` animation, if any.
 	stop: function () {
 		L.Util.cancelAnimFrame(this._flyToFrame);
 		if (this._panAnim) {
@@ -234,7 +341,12 @@ L.Map = L.Evented.extend({
 		return this;
 	},
 
+
 	// TODO handler.addTo
+	// TODO Appropiate docs section?
+	// 🍂section Other Methods
+	// 🍂method addHandler(name: String, HandlerClass: Function): this
+	// Adds a new `Handler` to the map, given its name and constructor function.
 	addHandler: function (name, HandlerClass) {
 		if (!HandlerClass) { return this; }
 
@@ -249,6 +361,8 @@ L.Map = L.Evented.extend({
 		return this;
 	},
 
+	// 🍂method remove(): this
+	// Destroys the map and clears all related event listeners.
 	remove: function () {
 
 		this._initEvents(true);
@@ -279,6 +393,11 @@ L.Map = L.Evented.extend({
 		return this;
 	},
 
+
+	// 🍂method createPane(name, container?): HTMLElement
+	// Creates a new map pane with the given name if it doesn't exist already,
+	// then returns it. The pane is created as a children of `container`, or
+	// as a children of the main map pane if not set.
 	createPane: function (name, container) {
 		var className = 'leaflet-pane' + (name ? ' leaflet-' + name.replace('Pane', '') + '-pane' : ''),
 		    pane = L.DomUtil.create('div', className, container || this._mapPane);
@@ -289,10 +408,11 @@ L.Map = L.Evented.extend({
 		return pane;
 	},
 
+	// 🍂section Methods for Getting Map State
 
-	// public methods for getting map state
-
-	getCenter: function () { // (Boolean) -> LatLng
+	// 🍂method getCenter(): LatLng
+	// Returns the geographical center of the map view
+	getCenter: function () {
 		this._checkIfLoaded();
 
 		if (this._lastCenter && !this._moved()) {
@@ -301,10 +421,14 @@ L.Map = L.Evented.extend({
 		return this.layerPointToLatLng(this._getCenterLayerPoint());
 	},
 
+	// 🍂method getZoom(): Number
+	// Returns the current zoom level of the map view
 	getZoom: function () {
 		return this._zoom;
 	},
 
+	// 🍂method getBounds(): LatLngBounds
+	// Returns the geographical bounds visible in the current map view
 	getBounds: function () {
 		var bounds = this.getPixelBounds(),
 		    sw = this.unproject(bounds.getBottomLeft()),
@@ -313,16 +437,25 @@ L.Map = L.Evented.extend({
 		return new L.LatLngBounds(sw, ne);
 	},
 
+	// 🍂method getMinZoom(): Number
+	// Returns the minimum zoom level of the map (if set in the `minZoom` option of the map or of any layers), or `0` by default.
 	getMinZoom: function () {
 		return this.options.minZoom === undefined ? this._layersMinZoom || 0 : this.options.minZoom;
 	},
 
+	// 🍂method getMinZoom(): Number
+	// Returns the minimum zoom level of the map (if set in the `minZoom` option of the map or of any layers).
 	getMaxZoom: function () {
 		return this.options.maxZoom === undefined ?
 			(this._layersMaxZoom === undefined ? Infinity : this._layersMaxZoom) :
 			this.options.maxZoom;
 	},
 
+	// 🍂method getBoundsZoom(bounds: LatLngBounds, inside?: Boolean): Number
+	// Returns the maximum zoom level on which the given bounds fit to the map
+	// view in its entirety. If `inside` (optional) is set to `true`, the method
+	// instead returns the minimum zoom level on which the map view fits into
+	// the given bounds in its entirety.
 	getBoundsZoom: function (bounds, inside, padding) { // (LatLngBounds[, Boolean, Point]) -> Number
 		bounds = L.latLngBounds(bounds);
 
@@ -352,6 +485,8 @@ L.Map = L.Evented.extend({
 		return inside ? zoom : zoom - 1;
 	},
 
+	// 🍂method getSize(): Point
+	// Returns the current size of the map container (in pixels).
 	getSize: function () {
 		if (!this._size || this._sizeChanged) {
 			this._size = new L.Point(
@@ -363,102 +498,171 @@ L.Map = L.Evented.extend({
 		return this._size.clone();
 	},
 
+	// 🍂method getPixelBounds(): Bounds
+	// Returns the bounds of the current map view in projected pixel
+	// coordinates (sometimes useful in layer and overlay implementations).
 	getPixelBounds: function (center, zoom) {
 		var topLeftPoint = this._getTopLeftPoint(center, zoom);
 		return new L.Bounds(topLeftPoint, topLeftPoint.add(this.getSize()));
 	},
 
+	/// TODO: Check semantics - isn't the pixel origin the 0,0 coord relative to
+	/// the map pane? "left point of the map layer" can be confusing, specially
+	/// since there can be negative offsets.
+	// 🍂method getPixelOrigin(): Point
+	// Returns the projected pixel coordinates of the top left point of
+	// the map layer (useful in custom layer and overlay implementations).
 	getPixelOrigin: function () {
 		this._checkIfLoaded();
 		return this._pixelOrigin;
 	},
 
+	// 🍂method getPixelWorldBounds(zoom?): Bounds
+	// Returns the world's bounds in pixel coordinates for zoom level `zoom`.
+	// If `zoom` is omitted, the map's current zoom level is used.
 	getPixelWorldBounds: function (zoom) {
 		return this.options.crs.getProjectedBounds(zoom === undefined ? this.getZoom() : zoom);
 	},
 
+	// 🍂section Other Methods
+
+	// 🍂method getPane(pane: String|HTMLElement): HTMLElement
+	// Returns a map pane, given its name or its HTML element (its identity).
 	getPane: function (pane) {
 		return typeof pane === 'string' ? this._panes[pane] : pane;
 	},
 
+	// 🍂method getPanes(): Object
+	// Returns a plain object containing the names of all panes as keys and
+	// the panes as values.
 	getPanes: function () {
 		return this._panes;
 	},
 
+	// 🍂method getContainer: HTMLElement
+	// Returns the HTML element that contains the map.
 	getContainer: function () {
 		return this._container;
 	},
 
 
-	// TODO replace with universal implementation after refactoring projections
+	// 🍂section Conversion Methods
 
+	// 🍂method getZoomScale(toZoom: Number, fromZoom: Number): Number
+	// Returns the scale factor to be applied to a map transition from zoom level
+	// `fromZoom` to `toZoom`. Used internally to help with zoom animations.
 	getZoomScale: function (toZoom, fromZoom) {
+		// TODO replace with universal implementation after refactoring projections
 		var crs = this.options.crs;
 		fromZoom = fromZoom === undefined ? this._zoom : fromZoom;
 		return crs.scale(toZoom) / crs.scale(fromZoom);
 	},
 
+	// 🍂method getScaleZoom(scale: Number, fromZoom: Number): Number
+	// Returns the zoom level that the map would end up at, if it is at `fromZoom`
+	// level and everything is scaled by a factor of `scale`. Inverse of
+	// [`getZoomScale`](#map-getZoomScale).
 	getScaleZoom: function (scale, fromZoom) {
 		fromZoom = fromZoom === undefined ? this._zoom : fromZoom;
 		return fromZoom + (Math.log(scale) / Math.LN2);
 	},
 
-
-	// conversion methods
-
-	project: function (latlng, zoom) { // (LatLng[, Number]) -> Point
+	// 🍂method project(latlng: LatLng, zoom: Number): Point
+	// Projects a geographical coordinate `LatLng` according to the projection
+	// of the map's CRS, then scales it according to `zoom` and the CRS's
+	// `Transformation`. The result is pixel coordinate relative to
+	// the CRS origin.
+	project: function (latlng, zoom) {
 		zoom = zoom === undefined ? this._zoom : zoom;
 		return this.options.crs.latLngToPoint(L.latLng(latlng), zoom);
 	},
 
-	unproject: function (point, zoom) { // (Point[, Number]) -> LatLng
+	// 🍂method unproject(point: Point, zoom: Number): LatLng
+	// Inverse of [`project`](#map-project).
+	unproject: function (point, zoom) {
 		zoom = zoom === undefined ? this._zoom : zoom;
 		return this.options.crs.pointToLatLng(L.point(point), zoom);
 	},
 
-	layerPointToLatLng: function (point) { // (Point)
+	// 🍂method layerPointToLatLng(point: Point): LatLng
+	// Given a pixel coordinate relative to the [origin pixel](#map-getpixelorigin),
+	// returns the corresponding geographical coordinate (for the current zoom level).
+	layerPointToLatLng: function (point) {
 		var projectedPoint = L.point(point).add(this.getPixelOrigin());
 		return this.unproject(projectedPoint);
 	},
 
-	latLngToLayerPoint: function (latlng) { // (LatLng)
+	// 🍂method latLngToLayerPoint(latlng: LatLng): Point
+	// Given a geographical coordinate, returns the corresponding pixel coordinate
+	// relative to the [origin pixel](#map-getpixelorigin).
+	latLngToLayerPoint: function (latlng) {
 		var projectedPoint = this.project(L.latLng(latlng))._round();
 		return projectedPoint._subtract(this.getPixelOrigin());
 	},
 
+	// 🍂method wrapLatLng(latlng: LatLng): LatLng
+	// Returns a `LatLng` where `lat` and `lng` has been wrapped according to the
+	// map's CRS's `wrapLat` and `wrapLng` properties, if they are outside the
+	// CRS's bounds.
+	// By default this means longitude is wrapped around the dateline so its
+	// value is between -180 and +180 degrees.
 	wrapLatLng: function (latlng) {
 		return this.options.crs.wrapLatLng(L.latLng(latlng));
 	},
 
+	// 🍂method distance(latlng1: LatLng, latlng2: LatLng): Number
+	// Returns the distance between two geographical coordinates according to
+	// the map's CRS. By default this measures distance in meters.
 	distance: function (latlng1, latlng2) {
 		return this.options.crs.distance(L.latLng(latlng1), L.latLng(latlng2));
 	},
 
+	// 🍂method containerPointToLayerPoint(point: Point): Point
+	// Given a pixel coordinate relative to the map container, returns the corresponding
+	// pixel coordinate relative to the [origin pixel](#map-getpixelorigin).
 	containerPointToLayerPoint: function (point) { // (Point)
 		return L.point(point).subtract(this._getMapPanePos());
 	},
 
+	// 🍂method layerPointToContainerPoint(point: Point): Point
+	// Given a pixel coordinate relative to the [origin pixel](#map-getpixelorigin),
+	// returns the corresponding pixel coordinate relative to the map container.
 	layerPointToContainerPoint: function (point) { // (Point)
 		return L.point(point).add(this._getMapPanePos());
 	},
 
+	// 🍂method containerPointToLatLng(point: Point): Point
+	// Given a pixel coordinate relative to the map container, returns
+	// the corresponding geographical coordinate (for the current zoom level).
 	containerPointToLatLng: function (point) {
 		var layerPoint = this.containerPointToLayerPoint(L.point(point));
 		return this.layerPointToLatLng(layerPoint);
 	},
 
+	// 🍂method latLngToContainerPoint(latlng: LatLng): Point
+	// Given a geographical coordinate, returns the corresponding pixel coordinate
+	// relative to the map container.
 	latLngToContainerPoint: function (latlng) {
 		return this.layerPointToContainerPoint(this.latLngToLayerPoint(L.latLng(latlng)));
 	},
 
-	mouseEventToContainerPoint: function (e) { // (MouseEvent)
+	// 🍂method mouseEventToContainerPoint(ev: MouseEvent): Point
+	// Given a MouseEvent object, returns the pixel coordinate relative to the
+	// map container where the event took place.
+	mouseEventToContainerPoint: function (e) {
 		return L.DomEvent.getMousePosition(e, this._container);
 	},
 
-	mouseEventToLayerPoint: function (e) { // (MouseEvent)
+	// 🍂method mouseEventToLayerPoint(ev: MouseEvent): Point
+	// Given a MouseEvent object, returns the pixel coordinate relative to
+	// the [origin pixel](#map-getpixelorigin) where the event took place.
+	mouseEventToLayerPoint: function (e) {
 		return this.containerPointToLayerPoint(this.mouseEventToContainerPoint(e));
 	},
 
+	// 🍂method mouseEventToLatLng(ev: MouseEvent): LatLng
+	// Given a MouseEvent object, returns geographical coordinate where the
+	// event took place.
 	mouseEventToLatLng: function (e) { // (MouseEvent)
 		return this.layerPointToLatLng(this.mouseEventToLayerPoint(e));
 	},
@@ -711,6 +915,12 @@ L.Map = L.Evented.extend({
 		}
 	},
 
+	// 🍂section Other Methods
+
+	// 🍂method whenReady(fn: Function, context?: Object): this
+	// Runs the given function `fn` when the map gets initialized with
+	// a view (center and zoom) and at least one layer, or immediately
+	// if it's already initialized, optionally passing a function context.
 	whenReady: function (callback, context) {
 		if (this._loaded) {
 			callback.call(context || this, {target: this});
@@ -808,6 +1018,20 @@ L.Map = L.Evented.extend({
 	}
 });
 
+// 🍂section
+
+// 🍂factory L.map(id: HTMLElement|String, options?: Map options)
+// Instantiates a map object given a `<div>` element (or its id) and optionally
+// an object literal with `Map options`.
 L.map = function (id, options) {
 	return new L.Map(id, options);
 };
+
+
+/*
+🍂section
+🍂property foo
+
+Foobar.
+
+*/

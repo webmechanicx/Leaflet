@@ -2,7 +2,14 @@
  * L.Handler.DoubleClickZoom is used to handle double-click zoom on the map, enabled by default.
  */
 
+// 🍂namespace Map
+// 🍂section Interaction Options
 L.Map.mergeOptions({
+	// 🍂option doubleClickZoom: Boolean = true
+	// Whether the map can be zoomed in by double clicking on it and
+	// zoomed out by double clicking while holding shift. If passed
+	// `'center'`, double-click zoom will zoom to the center of the
+	//  view regardless of where the mouse was.
 	doubleClickZoom: true
 });
 
@@ -28,4 +35,6 @@ L.Map.DoubleClickZoom = L.Handler.extend({
 	}
 });
 
+// 🍂property doubleClickZoom: Handler
+// Double click zoom handler.
 L.Map.addInitHook('addHandler', 'doubleClickZoom', L.Map.DoubleClickZoom);

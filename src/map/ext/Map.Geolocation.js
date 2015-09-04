@@ -2,8 +2,12 @@
  * Provides L.Map with convenient shortcuts for using browser geolocation features.
  */
 
+// 🍂namespace Map
+
 L.Map.include({
+	// 🍂section Geolocation methods
 	_defaultLocateOptions: {
+		//
 		timeout: 10000,
 		watch: false
 		// setView: false
@@ -12,7 +16,13 @@ L.Map.include({
 		// enableHighAccuracy: false
 	},
 
-	locate: function (/*Object*/ options) {
+	// 🍂method locate(options?: Locate options): this
+	// Tries to locate the user using the Geolocation API, firing a `locationfound`
+	// event with location data on success or a `locationerror` event on failure,
+	// and optionally sets the map view to the user's location with respect to
+	// detection accuracy (or to the world view if geolocation failed).
+	// See `Locate options` for more details.
+	locate: function (options) {
 
 		options = this._locateOptions = L.extend({}, this._defaultLocateOptions, options);
 
@@ -36,6 +46,10 @@ L.Map.include({
 		return this;
 	},
 
+	// 🍂method stopLocate(): this
+	// Stops watching location previously initiated by `map.locate({watch: true})`
+	// and aborts resetting the map view if map.locate was called with
+	// `{setView: true}`.
 	stopLocate: function () {
 		if (navigator.geolocation && navigator.geolocation.clearWatch) {
 			navigator.geolocation.clearWatch(this._locationWatchId);
@@ -56,6 +70,9 @@ L.Map.include({
 			this.fitWorld();
 		}
 
+		// 🍂section Location events
+		// 🍂event locationerror: ErrorEvent
+		// Fired when geolocation (using the [`locate`](#map-locate) method) failed.
 		this.fire('locationerror', {
 			code: c,
 			message: 'Geolocation error: ' + message + '.'
@@ -86,6 +103,9 @@ L.Map.include({
 			}
 		}
 
+		// 🍂event locationerror: ErrorEvent
+		// Fired when geolocation (using the [`locate`](#map-locate) method)
+		// went successfully.
 		this.fire('locationfound', data);
 	}
 });
