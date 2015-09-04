@@ -42,7 +42,7 @@ L.Polyline = L.Path.extend({
 		// 🍂option smoothFactor: Number = 1.0
 		// How much to simplify the polyline on each zoom level. More means
 		// better performance and smoother look, and less means more accurate representation.
-		smoothFactor: 1.0
+		smoothFactor: 1.0,
 
 		// 🍂option noClip: Boolean: false
 		// Disable polyline clipping.

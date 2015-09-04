@@ -5,9 +5,6 @@
 
 L.PolyUtil = {};
 
-
- polygon clipping algorithm
-
 /* 🍂function clipPolygon(points: Point[], bounds: Bounds, round?: Boolean): Point[]
  * Clips the polygon geometry defined by the given `points` by the given bounds (using the [Sutherland-Hodgeman algorithm](https://en.wikipedia.org/wiki/Sutherland%E2%80%93Hodgman_algorithm)).
  * Used by Leaflet to only show polygon points that are on the screen or near, increasing

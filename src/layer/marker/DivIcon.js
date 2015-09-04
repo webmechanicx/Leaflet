@@ -28,13 +28,13 @@ L.DivIcon = L.Icon.extend({
 
 		// 🍂option html: String = ''
 		// Custom HTML code to put inside the div element, empty by default.
-		html: false
+		html: false,
 
 		// 🍂option bgPos: Point = [0, 0]
 		// Optional relative position of the background, in pixels
 		bgPos: null,
 
-		className: 'leaflet-div-icon',
+		className: 'leaflet-div-icon'
 	},
 
 	createIcon: function (oldIcon) {
