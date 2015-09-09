@@ -25,11 +25,11 @@ function buildDocs() {
 	doc.addFile('src/map/ext/Map.Geolocation.js');
 	doc.addFile('src/map/handler/Map.BoxZoom.js');
 	doc.addFile('src/map/handler/Map.DoubleClickZoom.js');
-	doc.addFile('src/map/handler/Map.Drag.js');             /// TODO
-	doc.addFile('src/map/handler/Map.Keyboard.js');         /// TODO
-	doc.addFile('src/map/handler/Map.ScrollWheelZoom.js');  /// TODO
-	doc.addFile('src/map/handler/Map.Tap.js');              /// TODO
-	doc.addFile('src/map/handler/Map.TouchZoom.js');        /// TODO
+	doc.addFile('src/map/handler/Map.Drag.js');
+	doc.addFile('src/map/handler/Map.Keyboard.js');
+	doc.addFile('src/map/handler/Map.ScrollWheelZoom.js');
+	doc.addFile('src/map/handler/Map.Tap.js');
+	doc.addFile('src/map/handler/Map.TouchZoom.js');
 
 
 

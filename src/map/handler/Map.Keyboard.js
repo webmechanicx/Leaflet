@@ -2,9 +2,20 @@
  * L.Map.Keyboard is handling keyboard interaction with the map, enabled by default.
  */
 
+// 🍂namespace map
+// 🍂section Keyboard Navigation Options
 L.Map.mergeOptions({
+	// 🍂option keyboard: Boolean = true
+	// Makes the map focusable and allows users to navigate the map with keyboard
+	// arrows and `+`/`-` keys.
 	keyboard: true,
+
+	// 🍂option keyboardPanOffset: Number = 80
+	// Amount of pixels to pan when pressing an arrow key.
 	keyboardPanOffset: 80,
+
+	// 🍂option keyboardZoomOffset: Number = 1
+	// Number of zoom levels to change when pressing `+` or `-` key.
 	keyboardZoomOffset: 1
 });
 
@@ -154,4 +165,7 @@ L.Map.Keyboard = L.Handler.extend({
 	}
 });
 
+
+// 🍂property keyboard: Handler
+// Keyboard navigation handler.
 L.Map.addInitHook('addHandler', 'keyboard', L.Map.Keyboard);
