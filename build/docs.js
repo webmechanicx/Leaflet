@@ -16,7 +16,6 @@ function buildDocs() {
 	/// TODO: Map panes!!
 	/// TODO: Options for map methods!! (fitbounds opts, zoom-pan opts, etc)
 	/// Maybe implement the "minor classes" thing?
-	/// TODO: Map events!
 
 
 	doc.addFile('src/map/anim/Map.PanAnimation.js');
@@ -30,10 +29,6 @@ function buildDocs() {
 	doc.addFile('src/map/handler/Map.ScrollWheelZoom.js');
 	doc.addFile('src/map/handler/Map.Tap.js');
 	doc.addFile('src/map/handler/Map.TouchZoom.js');
-
-
-
-
 
 	doc.addFile('src/layer/marker/Marker.js');
 	doc.addFile('src/layer/marker/Marker.Drag.js');
@@ -86,8 +81,8 @@ function buildDocs() {
 	doc.addFile('src/layer/Layer.Popup.js');
 	doc.addFile('src/control/Control.js');
 	doc.addFile('src/core/Handler.js');
-	// doc.addFile('src/.js');	/// FIXME: Projection base, projections
-	// doc.addFile('src/geo/crs/CRS.js');	/// FIXME: Other CRSs
+	// doc.addFile('src/geo/projection/*.js');	/// FIXME: Projection base, projections
+	doc.addFile('src/geo/crs/CRS.js');	/// FIXME: Other CRSs
 
 	/// FIXME: Event objects
 	/// Maybe implement the "minor classes" thing?

@@ -2,7 +2,7 @@
  * L.Handler.ScrollWheelZoom is used by L.Map to enable mouse scroll wheel zoom on the map.
  */
 
-// 🍂namespace map
+// 🍂namespace Map
 // 🍂section Interaction Options
 L.Map.mergeOptions({
 	// 🍂option scrollWheelZoom: Boolean = true
@@ -76,6 +76,7 @@ L.Map.ScrollWheelZoom = L.Handler.extend({
 	}
 });
 
+// 🍂section Handlers
 // 🍂property scrollWheelZoom: Handler
 // Scroll wheel zoom handler.
 L.Map.addInitHook('addHandler', 'scrollWheelZoom', L.Map.ScrollWheelZoom);

@@ -29,6 +29,10 @@ L.Map.mergeOptions({
 	easeLinearity: 0.2,
 
 	// TODO refactor, move to CRS
+	// 🍂option worldCopyJump: Boolean = false
+	// With this option enabled, the map tracks when you pan to another "copy"
+	// of the world and seamlessly jumps to the original one so that all overlays
+	// like markers and vector layers are still visible.
 	worldCopyJump: false,
 
 	// 🍂section Interaction Options
@@ -210,6 +214,7 @@ L.Map.Drag = L.Handler.extend({
 	}
 });
 
+// 🍂section Handlers
 // 🍂property dragging: Handler
 // Map dragging handler (by both mouse and touch).
 L.Map.addInitHook('addHandler', 'dragging', L.Map.Drag);

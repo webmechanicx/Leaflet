@@ -35,6 +35,7 @@ L.Map.DoubleClickZoom = L.Handler.extend({
 	}
 });
 
+// 🍂section Handlers
 // 🍂property doubleClickZoom: Handler
 // Double click zoom handler.
 L.Map.addInitHook('addHandler', 'doubleClickZoom', L.Map.DoubleClickZoom);

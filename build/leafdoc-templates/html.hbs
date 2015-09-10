@@ -86,12 +86,12 @@
 			</ul>
 		</div>
 		<div class="toc-col">
-			<h4>Shared Methods</h4>
-			<ul>
+<!-- 			<h4>Shared Methods</h4> -->
+<!-- 			<ul> -->
 <!-- 				<li><a href="#evented">Event</a></li> -->
 <!-- 				<li><a href="#layers">Layer</a></li> -->
-				<li><a href="#popup">Popup</a></li>
-			</ul>
+<!-- 				<li><a href="#popup">Popup</a></li> -->
+<!-- 			</ul> -->
 			<h4>Utility</h4>
 			<ul>
 				<li><a href="#browser">Browser</a></li>
@@ -118,7 +118,7 @@
 				<li><a href="#handler">Handler</a></li>
 				<!--<li><a class="nodocs" href="#">IFeature</a></li>-->
 <!-- 				<li><a href="#projection">Projection</a></li> -->
-<!-- 				<li><a href="#crs">CRS</a></li> -->
+				<li><a href="#crs">CRS</a></li>
 			</ul>
 
 			<h4>Misc</h4>
@@ -243,6 +243,11 @@
 
 	table {
 		margin-bottom: 0;
+	}
+
+/* 	Markdown renders some spurious <p>s inside the table cells */
+	td > p {
+		margin:0;
 	}
 
 	section.collapsable {

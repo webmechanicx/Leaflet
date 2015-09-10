@@ -393,6 +393,10 @@ L.Popup = L.Layer.extend({
 			dy = containerPos.y - paddingTL.y;
 		}
 
+		// 🍂namespace Map
+		// 🍂section Popup events
+		// 🍂event autopanstart
+		// Fired when the map starts autopanning when opening a popup.
 		if (dx || dy) {
 			map
 			    .fire('autopanstart')

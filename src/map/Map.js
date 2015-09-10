@@ -53,7 +53,7 @@ L.Map = L.Evented.extend({
 		// [`setMaxBounds`](#map-setmaxbounds) method.
 		maxBounds: null,
 
-		// 🍂option renderer
+		// 🍂option renderer: Renderer = *
 		// The default method for drawing vector layers on the map. `L.SVG`
 		// or `L.Canvas` by default depending on browser support.
 		renderer: null,
@@ -325,12 +325,16 @@ L.Map = L.Evented.extend({
 			}
 		}
 
+		// 🍂section Map state change events
+		// 🍂event resize: Event
+		// Fired when the map is resized.
 		return this.fire('resize', {
 			oldSize: oldSize,
 			newSize: newSize
 		});
 	},
 
+	// 🍂section Methods for modifying map state
 	// 🍂method stop(): this
 	// Stops the currently running `panTo` or `flyTo` animation, if any.
 	stop: function () {
@@ -383,6 +387,9 @@ L.Map = L.Evented.extend({
 		this._clearHandlers();
 
 		if (this._loaded) {
+			// 🍂section Map state change events
+			// 🍂event unload: Event
+			// Fired when the map is destroyed with [remove](#map-remove) method.
 			this.fire('unload');
 		}
 
@@ -393,7 +400,7 @@ L.Map = L.Evented.extend({
 		return this;
 	},
 
-
+	// 🍂section Other Methods
 	// 🍂method createPane(name, container?): HTMLElement
 	// Creates a new map pane with the given name if it doesn't exist already,
 	// then returns it. The pane is created as a children of `container`, or
@@ -730,6 +737,7 @@ L.Map = L.Evented.extend({
 
 	// private methods that modify map state
 
+	// 🍂section Map state change events
 	_resetView: function (center, zoom) {
 		L.DomUtil.setPosition(this._mapPane, new L.Point(0, 0));
 
@@ -743,14 +751,24 @@ L.Map = L.Evented.extend({
 			._move(center, zoom)
 			._moveEnd(zoomChanged);
 
+		// 🍂event viewreset: Event
+		// Fired when the map needs to redraw its content (this usually happens
+		// on map zoom or load). Very useful for creating custom overlays.
 		this.fire('viewreset');
 
+		// 🍂event load: Event
+		// Fired when the map is initialized (when its center and zoom are set
+		// for the first time).
 		if (loading) {
 			this.fire('load');
 		}
 	},
 
 	_moveStart: function (zoomChanged) {
+		// 🍂event zoomstart: Event
+		// Fired when the map zoom is about to change (e.g. before zoom animation).
+		// 🍂event movestart: Event
+		// Fired when the view of the map starts changing (e.g. user starts dragging the map).
 		if (zoomChanged) {
 			this.fire('zoomstart');
 		}
@@ -768,16 +786,29 @@ L.Map = L.Evented.extend({
 		this._lastCenter = center;
 		this._pixelOrigin = this._getNewPixelOrigin(center);
 
+		// 🍂event zoom: Event
+		// Fired repeteadly during any change in zoom level, including zoom
+		// and fly animations.
 		if (zoomChanged) {
 			this.fire('zoom', data);
 		}
+
+		// 🍂event move: Event
+		// Fired repeteadly during any movement of the map, including pan and
+		// fly animations.
 		return this.fire('move', data);
 	},
 
 	_moveEnd: function (zoomChanged) {
+		// 🍂event zoomend: Event
+		// Fired when the map has changed, after any animations.
 		if (zoomChanged) {
 			this.fire('zoomend');
 		}
+
+		// 🍂event moveend: Event
+		// Fired when the center of the map stops changing (e.g. user stopped
+		// dragging the map).
 		return this.fire('moveend');
 	},
 
@@ -801,6 +832,7 @@ L.Map = L.Evented.extend({
 
 	// DOM event handling
 
+	// 🍂section Interaction events
 	_initEvents: function (remove) {
 		if (!L.DomEvent) { return; }
 
@@ -809,6 +841,27 @@ L.Map = L.Evented.extend({
 
 		var onOff = remove ? 'off' : 'on';
 
+		// 🍂event click: MouseEvent
+		// Fired when the user clicks (or taps) the map.
+		// 🍂event dblclick: MouseEvent
+		// Fired when the user double-clicks (or double-taps) the map.
+		// 🍂event mousedown: MouseEvent
+		// Fired when the user pushes the mouse button on the map.
+		// 🍂event mouseup: MouseEvent
+		// Fired when the user releases the mouse button on the map.
+		// 🍂event mouseover: MouseEvent
+		// Fired when the mouse enters the map.
+		// 🍂event mouseout: MouseEvent
+		// Fired when the mouse leaves the map.
+		// 🍂event mousemove: MouseEvent
+		// Fired while the mouse moves over the map.
+		// 🍂event contextmenu: MouseEvent
+		// Fired when the user pushes the right mouse button on the map, prevents
+		// default browser context menu from showing if there are listeners on
+		// this event. Also fired on mobile when the user holds a single touch
+		// for a second (also called long press).
+		// 🍂event keypress: Event
+		// Fired when the user presses a key from the keyboard while the map is focused.
 		L.DomEvent[onOff](this._container, 'click dblclick mousedown mouseup ' +
 			'mouseover mouseout mousemove contextmenu keypress', this._handleDOMEvent, this);
 
@@ -852,6 +905,10 @@ L.Map = L.Evented.extend({
 
 		if (e.type === 'click') {
 			// Fire a synthetic 'preclick' event which propagates up (mainly for closing popups).
+			// 🍂event preclick: MouseEvent
+			// Fired before mouse click on the map (sometimes useful when you
+			// want something to happen on click before any existing click
+			// handlers start running).
 			var synth = L.Util.extend({}, e);
 			synth.type = 'preclick';
 			this._handleDOMEvent(synth);

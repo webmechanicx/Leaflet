@@ -2,7 +2,7 @@
  * L.Handler.TouchZoom is used by L.Map to add pinch zoom on supported mobile browsers.
  */
 
-// 🍂namespace map
+// 🍂namespace Map
 // 🍂section Interaction Options
 L.Map.mergeOptions({
 	// 🍂option touchZoom: Boolean = *
@@ -116,6 +116,7 @@ L.Map.TouchZoom = L.Handler.extend({
 	}
 });
 
+// 🍂section Handlers
 // 🍂property touchZoom: Handler
 // Touch zoom handler.
 L.Map.addInitHook('addHandler', 'touchZoom', L.Map.TouchZoom);

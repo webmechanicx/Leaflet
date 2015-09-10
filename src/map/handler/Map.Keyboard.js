@@ -2,7 +2,7 @@
  * L.Map.Keyboard is handling keyboard interaction with the map, enabled by default.
  */
 
-// 🍂namespace map
+// 🍂namespace Map
 // 🍂section Keyboard Navigation Options
 L.Map.mergeOptions({
 	// 🍂option keyboard: Boolean = true
@@ -165,7 +165,8 @@ L.Map.Keyboard = L.Handler.extend({
 	}
 });
 
-
+// 🍂section Handlers
+// 🍂section Handlers
 // 🍂property keyboard: Handler
 // Keyboard navigation handler.
 L.Map.addInitHook('addHandler', 'keyboard', L.Map.Keyboard);

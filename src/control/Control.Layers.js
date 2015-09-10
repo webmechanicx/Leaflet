@@ -208,12 +208,15 @@ L.Control.Layers = L.Control.extend({
 
 		var obj = this._layers[L.stamp(e.target)];
 
+		// 🍂namespace Map
+		// 🍂section Layer events
 		// 🍂event baselayerchange: LayersControlEvent
-		// Fired when the base layer is changed through the control.
+		// Fired when the base layer is changed through the [layer control](#control-layers).
 		// 🍂event overlayadd: LayersControlEvent
-		// Fired when an overlay is selected through the control.
+		// Fired when an overlay is selected through the [layer control](#control-layers).
 		// 🍂event overlayremove: LayersControlEvent
-		// Fired when an overlay is deselected through the control.
+		// Fired when an overlay is deselected through the [layer control](#control-layers).
+		// 🍂namespace Control.Layers
 		var type = obj.overlay ?
 			(e.type === 'add' ? 'overlayadd' : 'overlayremove') :
 			(e.type === 'add' ? 'baselayerchange' : null);

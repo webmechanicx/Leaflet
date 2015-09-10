@@ -7,7 +7,6 @@
 L.Map.include({
 	// 🍂section Geolocation methods
 	_defaultLocateOptions: {
-		//
 		timeout: 10000,
 		watch: false
 		// setView: false
@@ -103,7 +102,7 @@ L.Map.include({
 			}
 		}
 
-		// 🍂event locationerror: ErrorEvent
+		// 🍂event locationfound: ErrorEvent
 		// Fired when geolocation (using the [`locate`](#map-locate) method)
 		// went successfully.
 		this.fire('locationfound', data);
