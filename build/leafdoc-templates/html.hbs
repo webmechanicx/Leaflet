@@ -124,16 +124,23 @@
 			<h4>Misc</h4>
 			<ul>
 <!-- 				<li><a href="#event-objects">Event objects</a></li> -->
-<!-- 				<li><a href="#global">global switches</a></li> -->
-<!-- 				<li><a href="#noconflict">noConflict</a></li> -->
-<!-- 				<li><a href="#version">version</a></li> -->
+ 				<li><a href="#global-switches">global switches</a></li>
+				<li><a href="#noconflict">noConflict</a></li>
+				<li><a href="#version">version</a></li>
 			</ul>
 		</div>
 	</div>
 
 	{{{ body }}}
 
+
+
+	<div class="footer">
+		<p>© 2015 <a href="http://agafonkin.com/en">Vladimir Agafonkin</a>. Maps © <a 	href="http://openstreetmap.org/copyright">OpenStreetMap</a> contributors.</p>
 	</div>
+
+	</div>
+
 	<script src="http://leafletjs.com/docs/js/docs.js"></script>
 	<script>
 	hljs.configure({tabReplace: '    '});
@@ -250,8 +257,9 @@
 		margin:0;
 	}
 
-	section.collapsable {
-/* 		background: pink; */
+/* 	This just looks bad (with the current grey headers for sections which Vlad doesn't really like, so might have to change this) */
+	section.collapsable > div.section-comments > p {
+		margin:0;
 	}
 
 	section.collapsable div.section-comments {

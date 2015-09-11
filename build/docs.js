@@ -12,6 +12,7 @@ function buildDocs() {
 
 	doc.addFile('build/docs-index.leafdoc', false);
 	doc.addDir('src');
+	doc.addFile('build/docs-misc.leafdoc', false);
 
 
 	/// TODO: Review sections in Map.js, maybe move methods around
@@ -90,13 +91,6 @@ function buildDocs() {
 
 	/// FIXME: Event objects
 	/// Maybe implement the "minor classes" thing?
-
-	/// FIXME: Global switches
-
-	/// FIXME: noConflict
-
-	/// FIXME: version
-
 
 
 	// console.log('internal namespaces are', doc._namespaces);
