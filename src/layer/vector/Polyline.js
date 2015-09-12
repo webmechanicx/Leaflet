@@ -213,6 +213,9 @@ L.Polyline = L.Path.extend({
 	_update: function () {
 		if (!this._map) { return; }
 
+		if (this._renderer) {
+			this._renderer._update();
+		}
 		this._clipPoints();
 		this._simplifyPoints();
 		this._updatePath();
